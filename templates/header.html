@@ -1,0 +1,312 @@
+   {% load static %}
+   {% load tailwind_tags %}
+
+    <!-- header area start -->
+    <header>
+      {% if compagny %}
+      <!-- header top -->
+      <div class="bg-section-bg-6">
+        <div class="container text-white text-13px md:text-sm font-bold">
+          <div class="flex justify-center md:justify-between items-center flex-wrap md:flex-nowrap">
+            <div class="flex justify-center md:block pt-2 md:pt-0">
+              <ul class="basis-full md:basis-auto flex gap-6 lg:gap-9 items-center">
+                {% if compagny.email %}
+                <li>
+                  <span class="hover:text-secondary-color">
+                      <i class="icon-mail text-secondary-color font-bold mr-0.5"></i>
+                        {{ compagny.email }}
+                  </span>
+                </li>
+                {% endif %}
+                {% if compagny.localisation %}
+                <li>
+                  <span class="hover:text-secondary-color" href="locations.html">
+                      <i class="icon-placeholder text-secondary-color font-bold mr-0.5"></i>
+                      {{ compagny.localisation }}
+                  </span>
+                </li>
+                {% endif %}
+              </ul>
+            </div>
+
+            <div class="basis-full md:basis-auto flex justify-center md:block py-5px md:py-0">
+              <ul class="text flex items-center gap-15px">
+              {% if compagny.reseauxsociaux_set.all.exists %}
+                {% for elt in compagny.reseauxsociaux_set.all %}
+                <li>
+                  <a href="{% if 'http' in elt.url %}{{ elt.url }}{% else %}https://{{ elt.url }}{% endif %}" target="_blank">
+                      <i class="{{ elt.icon }} font-bold"></i>
+                  </a>
+                </li>
+                {% endfor %}
+              {% endif %}
+                <li>
+                    {% if request.user.is_authenticated and request.user.client and request.user.is_active %}
+                        <a href="{% url 'deconnexion' %}" class="px-4 md:px-5 py-0.5 md:py-10px ml-2 lg:ml-5 bg-secondary-color inline-block bg-opacity-100 hover:bg-opacity-60 hover:text-white">
+                          Se deconnecter
+                        </a>
+                    {% else %}
+                      <a href="{% url 'connexion' %}" class="px-4 md:px-5 py-0.5 md:py-10px ml-2 lg:ml-5 bg-secondary-color inline-block bg-opacity-100 hover:bg-opacity-60 hover:text-white">
+                        Se connecter
+                      </a>
+                    {% endif %}
+
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- navbar main -->
+      {% if menu.exists %}
+      <div class="sticky-header z-xl bg-white transition-all duration-700">
+        <div class="container flex flex-col md:flex-row justify-center md:justify-between items-center relative py-21px">
+          <!-- logo area -->
+          <div class="mt-10px mb-22px md:mt-0 md:mb-0 leading-1">
+            <a href="{% url 'acceuil' %}">
+              <img src="{% if compagny.image %} {{ compagny.image.url }} {% endif %}" alt=""  class="w-full max-h-[4.5rem]">
+            </a>
+          </div>
+          <nav class="flex-grow hidden xl:block">
+            <ul class="flex items-center justify-center gap-15px xl:gap-5">
+              {% for elt in menu %}
+              <li class="relative group">
+                <a href="{% url elt.route %}" class="{% if menu_active == elt.id %}text-secondary-color{% endif %} text-lg xl:text-15px 2xl:text-lg text-heading-color hover:text-secondary-color font-semibold whitespace-nowrap pl-10px py-22px">
+                    {{ elt.titre }}
+                </a>
+              </li>
+              {% endfor %}
+            </ul>
+          </nav>
+          <!-- header right -->
+          <div>
+            <ul class="flex items-center gap-10px">
+              <li class="relative search-form-container">
+                <button class="search-toggle h-50px w-50px text-heading-color shadow-box-shadow-1 flex justify-center items-center hover:bg-secondary-color hover:text-white transition-all duration-300">
+                  <i class="icon-search for-search-show font-bold"></i>
+                  <i class="icon-cancel for-search-close font-bold hidden"></i>
+                </button>
+                <div class="search-form h-0 overflow-hidden absolute right-0 top-full mt-15px transition-all duration-300 shadow-box-shadow-3 z-xl bg-white">
+                  <form action="{% url 'projets' %}" method="GET" class="w-80 p-15px relative">
+                     <input
+                      name = "search_header"
+                      type="text"
+                      placeholder="Entrer le titre du projet"
+                      class="text-sm text-paragraph-color pl-5 pr-50px placeholder:text-paragraph-color outline-none border-2 border-border-color-9 focus:border focus:border-secondary-color h-60px block w-full rounded-none"
+                    >
+                    <button
+                      type="submit"
+                      class="absolute top-1/2 -translate-y-1/2 right-7 text-heading-color"
+                    >
+                      <i class="icon-search text-lg font-bold"></i>
+                    </button>
+                  </form>
+                </div>
+              </li>
+              <li class="group relative">
+                <button class="h-50px w-50px text-heading-color shadow-box-shadow-1 flex justify-center items-center hover:bg-secondary-color hover:text-white transition-all duration-300">
+                  <i class="icon-user font-bold text-lg"></i>
+                </button>
+
+                <!-- dropdown -->
+                <ul class="py-10px w-150px shadow-box-shadow-4 absolute right-0 top-full opacity-0 invisible translate-y-4 bg-white transition-all duration-300 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 z-xl">
+                 <li>
+                    <a
+                      class="whitespace-nowrap px-15px py-5px"
+                      href="{% url 'connexion' %}"
+                      >Se connecter</a
+                    >
+                  </li>
+
+                  <li>
+                  {% if request.user.is_authenticated and request.user.client and request.user.is_active %}
+                    <a
+                      class="whitespace-nowrap px-15px py-5px"
+                      href="{% url 'deconnexion' %}"
+                      >Se deconnecter</a
+                    >
+                    {% else %}
+                    <a
+                      class="whitespace-nowrap px-15px py-5px"
+                      href="{% url 'inscription' %}"
+                      >S'inscrire</a
+                    >
+                    {% endif %}
+                  </li>
+                  {% if request.user.is_authenticated and request.user.client and request.user.is_active %}
+                  <li>
+                    <a
+                      class="whitespace-nowrap px-15px py-5px"
+                      href="{% url 'dashboard' %}"
+                      >Tableau de bord</a
+                    >
+                  </li>
+                  {% endif %}
+                </ul>
+              </li>
+              {% if request.user.is_authenticated and request.user.client and request.user.is_active %}
+              <li>
+                <button class="show-drawer h-50px w-50px text-heading-color shadow-box-shadow-1 flex justify-center items-center hover:bg-secondary-color hover:text-white transition-all duration-300">
+                  <i class="icon-shopping-cart font-bold text-lg"></i>
+                  <sup id="nombre_panier_menu" hx-swap-oob="true" class="ml-1 text-sm font-semibold">{{ request.user.client.panier_set.all|length }}</sup>
+                </button>
+              </li>
+              {% else %}
+                <li>
+                <button class="show-drawer h-50px w-50px text-heading-color shadow-box-shadow-1 flex justify-center items-center hover:bg-secondary-color hover:text-white transition-all duration-300">
+                  <i class="icon-shopping-cart font-bold text-lg"></i>
+                </button>
+              </li>
+              {% endif %}
+              <li class="block xl:hidden">
+                <div class="show-drawer d-xl-none h-50px w-50px text-heading-color shadow-box-shadow-1 flex justify-center items-center transition-all duration-300 relative">
+                  <span class="utilize-toggle">
+                    <svg viewBox="0 0 800 600">
+                      <path
+                        d="M300,220 C300,220 520,220 540,220 C740,220 640,540 520,420 C440,340 300,200 300,200"
+                        id="top"
+                      ></path>
+                      <path d="M300,320 L540,320" id="middle"></path>
+                      <path
+                        d="M300,210 C300,210 520,210 540,210 C740,210 640,530 520,410 C440,330 300,190 300,190"
+                        id="bottom"
+                        transform="translate(480, 320) scale(1, -1) translate(-480, -318) "
+                      ></path>
+                    </svg>
+                  </span>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- cart sidebar -->
+      <div class="drawer-container cart-container">
+        <div class="drawer-overlay fixed top-0 left-0 w-full h-full bg-black -z-1 close-drawer opacity-0 transition-all duration-300 invisible cursor-zoom-out"></div>
+        <div id="panier_aside" hx-swap="true" class="drawer cart fixed top-0 -right-[300px] xs:-right-[400px] pl-30px pr-10px py-5 w-300px xs:w-100 h-full transition-all duration-500 shadow-dropdown-secodary bg-whiteColor z-high bg-white">
+          {%  include 'panier_side.html' %}
+        </div>
+      </div>
+
+      {% if menu.exists %}
+      <!-- mobile menu -->
+      <div class="drawer-container mobile-menu-container">
+        <div class="drawer-overlay fixed top-0 left-0 w-full h-full bg-black -z-1 close-drawer opacity-0 transition-all duration-300 invisible cursor-zoom-out block xl:hidden"></div>
+        <div class="drawer mobile-menu fixed top-0 -left-[300px] xs:-left-[400px] px-5 xs:px-10 py-50px w-300px xs:w-100 h-full transition-all duration-500 shadow-dropdown-secodary bg-whiteColor z-high block xl:hidden bg-white">
+          <div class="pr-15px overflow-auto h-full">
+            <!-- mobile menu wrapper -->
+            <div>
+              <!-- mobile logo area -->
+              <div class="flex justify-between items-center border-b border-border-primary pt-3px pb-10px mb-25px">
+                <div>
+                  <a href="{% url 'acceuil' %}">
+                    <img src="{{ compagny.image.url }}" alt="" >
+                  </a>
+                </div>
+                <div>
+                  <button class="close-drawer text-black text-3xl px-15px py-2">
+                    ×
+                  </button>
+                </div>
+              </div>
+
+              <!-- search input  -->
+              <div class="mb-50px">
+                <form action="{% url 'projets' %}" method="GET" class="w-full relative">
+                    <input
+                      name = "search_header"
+                      type="text"
+                      placeholder="Entrer le titre du projet"
+                      class="text-sm text-paragraph-color pl-5 pr-50px placeholder:text-paragraph-color outline-none border-2 border-border-color-9 focus:border focus:border-secondary-color h-65px block w-full rounded-none"
+                    >
+                  <button type="submit" class="absolute top-1/2 -translate-y-1/2 right-7 text-heading-color">
+                    <i class="icon-search text-lg font-bold"></i>
+                  </button>
+                </form>
+              </div>
+
+              <!-- mobile menu accordions -->
+              <div class="border-b border-border-primary dark:border-borderColor-dark pb-8">
+                <ul class="">
+                  {% for elt in menu %}
+                  <li class="mt-4">
+                    <!-- accordion header -->
+                    <div class="flex items-center justify-between cursor-pointer hover:text-secondary-color uppercase text-sm lg:text-base py-2 lg:py-2.5">
+                      <a href="{% url elt.route %}" class="{% if menu_active == elt.id %}text-secondary-color{% endif %}">{{ elt.titre }}</a>
+                    </div>
+                  </li>
+                  {% endfor %}
+                </ul>
+              </div>
+
+              <!-- my account -->
+              <div>
+                <ul class="mb-30px pb-5 pt-5px border-b border-border-primary">
+                  <li class="group mt-4">
+                    <!-- accordion header -->
+                      <a href="{% url 'connexion' %}" class="text-sm lg:text-base">
+                        <span class="inline-block h-50px w-50px border-2 border-border-color-1 text-center leading-50px mr-3">
+                          <i class="far fa-user"></i>
+                        </span>
+                            Se connecter
+                      </a>
+                  </li>
+                  <li class="group mt-4">
+                    <!-- accordion header -->
+                      {% if request.user.is_authenticated and request.user.client and request.user.is_active %}
+                        <a href="{% url 'deconnexion' %}" class="text-sm lg:text-base">
+                          <span class="inline-block h-50px w-50px border-2 border-border-color-1 text-center leading-50px mr-3">
+                            <i class="far fa-user"></i>
+                          </span>
+                              Se deconnecter
+                        </a>
+                    {% else %}
+                      <a href="{% url 'inscription' %}" class="text-sm lg:text-base">
+                        <span class="inline-block h-50px w-50px border-2 border-border-color-1 text-center leading-50px mr-3">
+                          <i class="far fa-user"></i>
+                        </span>
+                            S'inscirire
+                      </a>
+                  {% endif %}
+                  </li>
+                  {% if request.user.is_authenticated and request.user.client and request.user.is_active %}
+                  <li class="group mt-4">
+                    <!-- accordion header -->
+                    <a href="{% url 'dashboard' %}?contenue=panier" class="text-sm lg:text-base">
+                      <span class="inline-block h-50px w-50px border-2 border-border-color-1 text-center leading-50px mr-3">
+                        <i class="fas fa-shopping-cart"></i>
+                        <sup id="nombre_projet_panier" hx-swap-oob="true">{{request.user.client.panier_set.all|length}}</sup>
+                      </span>
+                      Mon panier
+                    </a>
+                  </li>
+                  {% endif %}
+                </ul>
+              </div>
+              <!-- Mobile menu social area -->
+              <div>
+                {% if compagny.reseauxsociaux_set.all.exists %}
+                <ul class="flex gap-3 items-center pt-4">
+                {% for elt in compagny.reseauxsociaux_set.all %}
+                  <li>
+                    <a
+                      class="h-10 w-10 bg-section-bg-1 hover:bg-secondary-color hover:text-white text-center text-sm lg:text-base"
+                      href="{% if 'http' in elt.url %}{{ elt.url }}{% else %}https://{{ elt.url }}{% endif %}" target="_blank"
+                      ><i class="{{ elt.icon }} leading-10"></i
+                    ></a>
+                  </li>
+                </li>
+                {% endfor %}
+                </ul>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    </header>

@@ -1,0 +1,85 @@
+{% load static %}
+
+{% if plan.exists %}
+<section x-data="{ activeTab: 1 }">
+  <div class="container pb-30">
+    <!-- Titre de section -->
+    <div class="text-center mb-50px" data-aos="fade-down" data-aos-duration="700">
+      <p class="text-sm md:text-15px lg:text-base text-secondary-color bg-secondary-color bg-opacity-10 capitalize mb-15px py-0.5 px-5 rounded-full inline-block font-semibold">
+        Nos Plans
+      </p>
+      <h2 class="text-2xl sm:text-3xl md:text-26px lg:text-3xl xl:text-44px text-heading-color font-bold">
+        Plans des proprietes
+      </h2>
+    </div>
+
+    <!-- Onglets -->
+    <div class="tab plan-tab">
+      <div class="tab-links flex flex-wrap items-center justify-center gap-x-5 lg:gap-x-30px xl:gap-x-50px gap-y-10px text-sm lg:text-lg xl:text-xl text-heading-color mb-50px"
+           data-aos="fade-up" data-aos-duration="800">
+        {% for elt in plan %}
+        <button
+          @click="activeTab = {{ forloop.counter }}"
+          :class="activeTab === {{ forloop.counter }} ? 'border-primary text-primary active' : 'border-transparent'"
+          class="tab-btn p-1px border-b-2 font-semibold relative leading-1.2 transition-all duration-200"
+        >
+          {{ elt.libelle }}
+        </button>
+        {% endfor %}
+      </div>
+
+      <!-- Contenus -->
+      <div class="tab-contents">
+        {% for elt in plan %}
+        <div
+          x-show="activeTab === {{ forloop.counter }}"
+          x-transition
+          class="tab-content"
+          x-cloak
+          data-aos="fade-up"
+          data-aos-delay="{{ forloop.counter0|add:'1' }}00"
+          data-aos-duration="700"
+        >
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-30px gap-y-50px items-center">
+
+            <!-- Texte -->
+            <div class="p-30px md:p-70px bg-secondary-color"
+                 data-aos="fade-right"
+                 data-aos-delay="200"
+                 data-aos-duration="1000">
+              <h6 class="text-xl md:text-22px lg:text-26px xl:text-3xl font-bold text-white mb-15px leading-1.3">
+                <a href="{% url 'projet_detail' elt.projet.slug %}" class="!text-white">{{ elt.projet.libelle }}</a>
+              </h6>
+              <p class="text-sm lg:text-base text-white mb-10">
+                {{ elt.projet.contenue|truncatewords:200 }}
+              </p>
+              {% if elt.projet.caracteristiqueprojet_set.all.exists %}
+              <ul class="flex flex-col gap-y-10px items-stretch">
+                {% for el in elt.projet.caracteristiqueprojet_set.all %}
+                <li class="text-sm md:text-base text-white font-semibold relative z-0 before:w-full before:h-1 before:border-b before:border-dashed before:border-white before:absolute before:top-1/2 before:-translate-y-1/2 before:left-0 before:-z-1">
+                  <ul class="flex justify-between items-center">
+                    <li class="leading-1.8 pr-10px bg-secondary-color">
+                      {{ el.libelle }}
+                    </li>
+                    <li class="leading-1.8 pl-10px bg-secondary-color">
+                      {{ el.valeur }} {{ el.unite|default:"" }}
+                    </li>
+                  </ul>
+                </li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+            </div>
+
+            <!-- Image -->
+            <div data-aos="zoom-in" data-aos-delay="300" data-aos-duration="1000">
+              <img src="{{ elt.image.url }}" class="w-full" alt="plan">
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}

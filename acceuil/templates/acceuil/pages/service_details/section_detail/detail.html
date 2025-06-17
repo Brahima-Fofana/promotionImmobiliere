@@ -1,0 +1,55 @@
+{% load static %}
+
+{% if service_detail %}
+      <section>
+        <div class="container pt-30 pb-[105px]">
+          <div class="grid grid-cols-1 lg:grid-cols-12 lg:gap-x-30px">
+            <!-- details -->
+            <div class="lg:col-start-1 lg:col-span-8">
+              <!-- thumbnail -->
+              <div class="mb-10">
+                <img src="{{ service_detail.image.url }}" alt="" class="w-full" >
+              </div>
+
+              <!-- description -->
+              <div>
+                {% if service_detail.description %}
+                <p class="text-2xl font-bold text-center my-6">
+                  {{ service_detail.description }}
+                </p>
+                {% endif %}
+                <p class="text-xl my-6">
+                  <span class="leading-1.8 lg:leading-1.8">
+                    {{ service_detail.contenue }}
+                  </span>
+                </p>
+              </div>
+            </div>
+            <!-- sidebar -->
+            <div
+              class="lg:col-start-9 lg:col-span-4 space-y-10 mt-[100px] lg:mt-0"
+            >
+              <!-- category -->
+              <ul class="flex flex-col gap-y-4">
+                {% for elt in service_card %}
+                <li>
+                  <a
+                    href="{% url 'service_detail' elt.slug %}"
+                    class="w-full py-23px pl-30px pr-10px bg-section-bg-1 hover:bg-secondary-color text-sm font-bold uppercase relative group hover:text-white">
+                    {{ elt.libelle }}
+                    <span
+                      class="bg-white text-primary-color group-hover:text-white group-hover:bg-secondary-color-3 transition-all duration-300 absolute right-[11px] top-[11px]"
+                      ><i
+                        class="fas fa-arrow-right hover:text-white hover:bg-primary-color w-50px h-50px leading-50px text-center"
+                      ></i
+                    ></span>
+                  </a>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+{% endif %}

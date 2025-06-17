@@ -1,0 +1,53 @@
+{% load static %}
+
+{% if appartement %}
+  <!-- about 2 section -->
+  <section>
+    <div class="container py-10 pb-90px">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-y-5 lg:gap-30px items-center">
+
+        <!-- about 2 left -->
+        <div class="mb-5" data-aos="fade-right" data-aos-duration="1000">
+          <div class="mb-30px">
+            <p class="text-sm md:text-15px lg:text-base text-secondary-color bg-secondary-color bg-opacity-10 capitalize mb-15px py-1px px-5 rounded-full inline-block font-semibold">
+              <span class="leading-1.3">Propriete Vedette</span>
+            </p>
+            <h2 class="text-2xl sm:text-3xl md:text-26px lg:text-3xl xl:text-44px text-heading-color font-bold mb-15px">
+              <span class="leading-1.3">{{ appartement.libelle }}</span>
+            </h2>
+            <p class="text-sm lg:text-base max-w-500px">
+              {{ appartement.description }}
+            </p>
+          </div>
+
+          <ul class="space-y-4 pb-4">
+            {% for elt in appartement.caracteristiquevedette_set.all %}
+              <li class="text-sm lg:text-base flex items-center">
+                <span class="w-15px h-0.5 bg-secondary-color opacity-50 inline-block mr-15px"></span>
+                <span class="leading-1.8">{{ elt.libelle }}</span>
+              </li>
+            {% endfor %}
+          </ul>
+
+          <div>
+            <ul class="flex gap-15px pt-4">
+              {% for elt in appartement.imagefarevedette_set.all %}
+                <li data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:'1' }}00">
+                  <a class="glightbox2" href="{{ elt.image.url }}">
+                    <img src="{{ elt.image.url }}" alt="">
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+
+        <!-- about 2 right -->
+        <div class="lg:ml-30px relative mb-10 lg:mb-0" data-aos="fade-left" data-aos-duration="1000">
+          <img src="{{ appartement.imageappvedette_set.all.0.image.url }}" alt="" class="max-w-full">
+        </div>
+
+      </div>
+    </div>
+  </section>
+{% endif %}

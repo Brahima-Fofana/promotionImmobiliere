@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="fr" >
+  <head>
+    <meta charset="UTF-8" >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" >
+    {% include 'lien-css.html' %}
+    <link rel="stylesheet" href="{% static 'acceuil/js/aos-master/dist/aos.css' %}">
+
+  </head>
+  <body class="flex flex-col h-screen ">
+    {% include 'header.html' %}
+
+    <main class="flex flex-grow justify-center items-center bg-gray-100"
+          style="
+            background-image: url('{% static 'client/image/galerie7.jpg' %}');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;">
+      {% block content %}{% endblock %}
+    </main>
+
+      <!-- footer copyright -->
+      {% if footer_bottom %}
+      <footer>
+        <div class="py-2 3xl:px-[2%] 4xl:px-[5%] bg-section-bg-7 text-sm lg:text-base text-white">
+          <div class="px-15px">
+            <div class="flex justify-center items-center">
+              <p class="leading-1.8 text-center lg:text-start text-white">
+                {{ footer_bottom.libelle }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </footer>
+      {% endif %}
+
+    {% include 'lien-js.html' %}
+      <script src="{% static 'acceuil/js/aos-master/dist/aos.js' %}"></script>
+    <script>
+        AOS.init({
+          once: true,
+        });
+    </script>
+  </body>
+</html>

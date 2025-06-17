@@ -1,0 +1,126 @@
+{% load static %}
+{% load humanize %}
+
+{% if projet.exists %}
+<!-- featured apartments section -->
+<section>
+  <div class="container-3 py-20 modal-container" role="region" aria-label="Projets Vedette">
+
+    <!-- section heading -->
+    <div class="text-center mb-50px" data-aos="fade-down" data-aos-delay="100">
+      <p class="text-sm md:text-15px lg:text-base text-secondary-color bg-secondary-color bg-opacity-10 capitalize mb-15px py-0.5 px-5 rounded-full inline-block font-semibold">
+        <span class="leading-1.3">NOS PROPRIÉTÉS</span>
+      </p>
+      <h2 class="text-2xl sm:text-3xl md:text-26px lg:text-3xl xl:text-44px text-heading-color font-bold">
+        <span class="leading-1.3">Annonce Vedette</span>
+      </h2>
+    </div>
+
+    <!-- featured apartments slider -->
+    <div class="featured-apartments swiper-container relative">
+      <div class="swiper featured-apartments-slider static">
+        <div class="swiper-wrapper">
+          {% for elt in projet %}
+          <div class="swiper-slide mb-65px px-15px" data-aos="zoom-in" data-aos-delay="{{ forloop.counter0|add:'1' }}00">
+            <div class="group border border-border-color-13 shadow-box-shadow-4 hover:shadow-lg hover:scale-[1.01] transition-all duration-500 ease-in-out">
+
+              <!-- image -->
+              <div class="relative leading-1">
+                <a href="{% url 'projet_detail' elt.slug %}" class="overflow-hidden" aria-label="Voir {{ elt.libelle }}">
+                  <img
+                    src="{{ elt.image.url|default:'/static/images/default.jpg' }}"
+                    alt="{{ elt.libelle }}"
+                    loading="lazy"
+                    onerror="this.onerror=null;this.src='/static/images/default.jpg';"
+                    class="w-full group-hover:scale-110 transition-all duration-700"
+                  >
+                </a>
+
+                <!-- localisation et bouton -->
+                <div class="absolute w-full left-0 bottom-0 px-15px pb-15px lg:px-30px bg-gradient-color-5">
+                  <div class="text-sm text-white flex justify-between items-center">
+                    {% if elt.localisation %}
+                    <a href="{% url 'projet_detail' elt.slug %}" class="hover:text-secondary-color">
+                      <i class="flaticon-pin" aria-hidden="true"></i> {{ elt.localisation }}
+                    </a>
+                    {% endif %}
+                    <ul class="flex gap-10px">
+                      <li>
+                        <a
+                          href="{% url 'projet_detail' elt.slug %}"
+                          class="w-30px lg:w-42px h-30px flex justify-center items-center bg-transparent lg:bg-white lg:bg-opacity-35 hover:text-secondary-color"
+                          aria-label="Voir la galerie de {{ elt.libelle }}"
+                        >
+                          <i class="fas fa-camera pr-1" aria-hidden="true"></i>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+
+                <!-- badge date -->
+                <div class="text-xs sm:text-13px text-white px-10px py-1 sm:px-15px bg-green uppercase font-semibold absolute top-[15px] right-[18px]">
+                  <span class="leading-5 block">{{ elt.modifie_le }}</span>
+                </div>
+              </div>
+
+              <!-- contenu -->
+              <div class="px-5 pt-4 lg:px-30px">
+                <p class=" font-semibold mb-15px uppercase">
+                  <span class="bg-secondary-color leading-25px px-2  py-1 text-white">
+                  {{ elt.option }}
+                  </span>
+                </p>
+                <h5 class="text-lg text-secondary-color font-semibold ">
+                  {% if elt.montant_investissement and elt.modalite_investissement %}
+                  <span>{{ elt.montant_investissement|intcomma }} FCFA</span>
+                  <label class="text-sm font-normal">/{{ elt.modalite_investissement }}</label><br>
+                  {% endif %}
+                  <span>{{ elt.cout_total|intcomma }} FCFA</span>
+                </h5>
+                <h4 class=" text-lg md:text-xl lg:text-22px font-semibold text-heading-color mb-15px">
+                  <a href="{% url 'projet_detail' elt.slug %}" class="hover:text-secondary-color leading-1.3">
+                    {{ elt.libelle }}
+                  </a>
+                </h4>
+              </div>
+
+              <!-- footer -->
+              <div class="p-5 lg:p-30px lg:pt-5 border-t border-border-color-1">
+                <div class="flex flex-wrap-reverse items-center justify-end gap-y-5">
+                  <a href="{% url 'projet_detail' elt.slug %}" class="text-sm font-medium text-secondary-color">
+                    EN SAVOIR PLUS
+                  </a>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+
+        <!-- pagination -->
+        <div class="swiper-pagination !-bottom-[6px]"></div>
+
+        <!-- navigation -->
+        <div class="hidden 3xl:block">
+          <div class="swiper-button-next z-1">
+            <i class="fas fa-arrow-right" aria-hidden="true"></i>
+          </div>
+          <div class="swiper-button-prev z-1">
+            <i class="fas fa-arrow-left" aria-hidden="true"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- bouton tous les projets -->
+    <div class="flex justify-center items-center" data-aos="fade-up" data-aos-delay="600">
+      <a href="{% url 'projets' %}" class="border rounded-full text-xl font-bold animate-bounce px-10 py-2 hover:bg-secondary-color hover:text-white">
+        Tous les annonces
+      </a>
+    </div>
+
+  </div>
+</section>
+{% endif %}

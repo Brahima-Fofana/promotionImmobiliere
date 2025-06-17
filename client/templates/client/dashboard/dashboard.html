@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="fr" >
+  <head>
+    <meta charset="UTF-8" >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" >
+    {% include 'lien-css.html' %}
+
+  </head>
+  <body>
+    {% include 'header.html' %}
+
+    <main>
+      <section class="">
+        <div class="">
+          <div class="grid sm:grid-cols-12">
+            <div class="sm:col-span-3 p-5 ">
+              {% include 'client/dashboard/aside.html' %}
+            </div>
+            <div class="sm:col-span-9 p-5">
+              <div id="dashboard-content">
+                {% include contenue_template %}
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+    </main>
+
+
+    {% include 'lien-js.html' %}
+    <script>
+  function initEditForm() {
+    const fields = document.querySelectorAll("#user-form input");
+    const editTrigger = document.getElementById('editTrigger');
+    const formSend = document.getElementById('formSend');
+    const saveContainer = document.getElementById('saveContainer');
+   const form = document.getElementById('user-form');
+
+    if (!editTrigger || !formSend) return;
+
+    fields.forEach(field => {
+      field.readOnly = true;
+      field.classList.add('bg-gray-100');
+    });
+
+    editTrigger.addEventListener('click', () => {
+      fields.forEach(field => {
+        field.readOnly = false;
+        field.classList.remove('bg-gray-100');
+      });
+      saveContainer.classList.remove('hidden');
+    });
+
+    formSend.addEventListener('click', () => {
+      fields.forEach(field => {
+        field.readOnly = true;
+        field.classList.add('bg-gray-100');
+      });
+      saveContainer.classList.add('hidden');
+    });
+
+  }
+
+  document.addEventListener('DOMContentLoaded', initEditForm());
+
+  document.body.addEventListener('htmx:afterSwap', function (e) {
+    initEditForm();
+  });
+</script>
+
+  </body>
+</html>

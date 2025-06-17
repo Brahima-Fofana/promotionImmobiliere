@@ -1,0 +1,27 @@
+{% load static %}
+
+{% if commentaire %}
+    <!-- reviews -->
+    {% for elt in commentaire %}
+    <div class="rounded-sm shadow-lg bg-gray-50 grid grid-cols-12 my-10">
+        <div class="col-span-3">
+            <div class=" rounded-full overflow-hidden">
+                <img src="{{ elt.client.image.url }}" alt="" class="w-full">
+            </div>
+            <div class="text-center py-1">
+                <p class="">{{ elt.client.user.username }}</p>
+            </div>
+        </div>
+        <div class="col-span-9 ">
+            <div class="p-5">
+                <p class="">
+                    {{ elt.contenue }}
+                </p>
+            </div>
+            <div class="italic text-right pb-2 px-5">
+                <p class="">Publie le : {{ elt.ajouter_le }}</p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+ {% endif %}

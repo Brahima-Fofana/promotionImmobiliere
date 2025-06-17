@@ -1,0 +1,221 @@
+{% load static %}
+
+  <div class="flex flex-col md:flex-row p-10 px-5 md:px-10 shadow-box-shadow-2">
+    <div class="">
+      <div class="mr-0 md:mr-10 lg:mr-30px xl:mr-10 mb-30px md:mb-0">
+      <img
+        src="{{ client.image.url }}"
+        class="max-full w-100px md:w-[180px] lg:w-[120px] xl:w-[180px]"
+        alt=""
+      >
+    </div>
+    <div class="">
+       <input id="upload-file" type="file" class="cursor-pointer" />
+    </div>
+    </div>
+
+
+    <div>
+      <h6 class="text-sm text-secondary-color font-bold mb-0">
+        <span class="leading-1.3">{{ client.poste|default:"Votre Poste" }}</span>
+      </h6>
+      <h2 class="text-xl md:text-22px lg:text-26px xl:text-3xl text-heading-color font-bold mb-10px">
+        <span class="leading-1.3 md:leading-1.3 xl:leading-1.3">
+          {% if user.first_name and user.last_name %}
+          {{ user.first_name }} {{ user.last_name }}
+          {% else %}
+          Votre Nom et Prenom
+          {% endif %}
+        </span>
+      </h2>
+      <ul>
+        <li>
+          <p class="text-sm flex items-center gap-4 mt-2">
+            <i class="icon-placeholder"></i>
+            <span class="leading-1.8">{{ client.localisation|default:"Votre Localisation" }}</span>
+          </p>
+        </li>
+        <li>
+           <span class="text-sm flex items-center gap-4 mt-2">
+            <i class="icon-call"></i>
+            <span class="leading-1.8">{{ client.contact1|default:"Votre contacte" }}</span>
+          </span>
+          {% if client.contact2 %}
+          <span class="text-sm flex items-center gap-4 mt-2">
+            <i class="icon-call"></i>
+            <span class="leading-1.8">{{ client.contact1 }}</span>
+          </span>
+          {% endif %}
+        </li>
+        <li>
+          <a class="text-sm flex items-center gap-4 mt-2" href="{% if user.email %}mailto:{{ user.email|default:'' }}{% endif %}">
+            <i class="icon-mail"></i>
+            <span class="leading-1.8">{{ user.email|default:"Votre email" }}</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+
+  <!-- form -->
+  <form
+          id="user-form"
+          action="{% url 'user_info' %}" method="POST"
+          hx-post="{% url 'user_info' %}" hx-target="#user-profile" hx-swap="innerHTML"
+          class="form-primary bg-white shadow-box-shadow-2 px-25px pt-10 pb-50px md:p-50px md:pt-10 mt-50px">
+    {% csrf_token %}
+    <h4 class="text-22px font-semibold leading-1.3 pl-10px border-l-2 border-secondary-color text-heading-color mb-30px">
+      INFORMATION PERSONNELLE
+    </h4>
+      {% if form.errors %}
+      <div class="flex flex-col justify-center items-center bg-red-200 py-5 my-5">
+        {% for field in form %}
+          {% if field.errors %}
+          <p class="">* {{ field.name }} {{ field.errors|first|slice:"8:" }}</p>
+          {% endif %}
+        {% endfor %}
+      </div>
+      {% endif %}
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-30px">
+      <!-- name -->
+      <div class="relative">
+        <input
+          type="text"
+          name = "nom"
+          {% if user.first_name %}
+            value="{{ user.first_name }}"
+          {% else %}
+            placeholder="Enter votre Nom"
+          {% endif %} readonly
+          class="{% if form.nom.errors %}border-secondary-color{% endif %} text-paragraph-color pl-5 pr-50px outline-none border-2 border-border-color-9 focus:border focus:border-secondary-color h-65px block w-full rounded-none placeholder:text-paragraph-color placeholder:text-sm placeholder:text-opacity-60"
+        >
+        <span class="absolute top-1/2 -translate-y-1/2 right-4">
+          <i class="fas fa-user text-sm lg:text-base text-secondary-color font-bold"></i>
+        </span>
+      </div>
+      <!-- name -->
+      <div class="relative">
+        <input
+          type="text"
+          name = "prenom"
+          {% if user.last_name %}
+            value="{{ user.last_name }}"
+          {% else %}
+            placeholder="Enter votre Prenom"
+          {% endif %}
+          class="{% if form.prenom.errors %}border-secondary-color{% endif %} text-paragraph-color pl-5 pr-50px outline-none border-2 border-border-color-9 focus:border focus:border-secondary-color h-65px block w-full rounded-none placeholder:text-paragraph-color placeholder:text-sm placeholder:text-opacity-60"
+        >
+        <span class="absolute top-1/2 -translate-y-1/2 right-4">
+          <i class="fas fa-user text-sm lg:text-base text-secondary-color font-bold"></i>
+        </span>
+      </div>
+      <!-- email -->
+      <div class="relative">
+        <input
+          type="email"
+          name="email"
+          {% if user.email %}
+            value="{{ user.email }}"
+          {% else %}
+            placeholder="Enter votre addresse email"
+          {% endif %}
+          class="{% if form.email.errors %}border-secondary-color{% endif %} text-paragraph-color pl-5 pr-50px outline-none border-2 border-border-color-9 focus:border focus:border-secondary-color h-65px block w-full rounded-none placeholder:text-paragraph-color placeholder:text-sm placeholder:text-opacity-60"
+        >
+        <span class="absolute top-1/2 -translate-y-1/2 right-4">
+          <i class="fas fa-envelope text-sm lg:text-base text-secondary-color font-bold"></i>
+        </span>
+      </div>
+      <div class="relative">
+        <input
+          type="text"
+          name="poste"
+          {% if client.poste %}
+            value="{{ client.poste }}"
+          {% else %}
+            placeholder="Entrer votre Poste"
+          {% endif %}
+          class="{% if form.poste.errors %}border-secondary-color{% endif %} text-paragraph-color pl-5 pr-50px outline-none border-2 border-border-color-9 focus:border focus:border-secondary-color h-65px block w-full rounded-none placeholder:text-paragraph-color placeholder:text-sm placeholder:text-opacity-60"
+        >
+        <span class="absolute top-1/2 -translate-y-1/2 right-4">
+          <i class="fas fa-user text-sm lg:text-base text-secondary-color font-bold"></i>
+        </span>
+      </div>
+      <!-- number -->
+      <div class="relative">
+        <input
+          type="text"
+          name="contact1"
+          {% if client.contact1 %}
+            value="{{ client.contact1 }}"
+          {% else %}
+            placeholder="Entrer votre numero*"
+          {% endif %}
+          class="{% if form.contact1.errors %}border-secondary-color{% endif %} text-paragraph-color pl-5 pr-50px outline-none border-2 border-border-color-9 focus:border focus:border-secondary-color h-65px block w-full rounded-none placeholder:text-paragraph-color placeholder:text-sm placeholder:text-opacity-60"
+        >
+        <span class="absolute top-1/2 -translate-y-1/2 right-4">
+          <i class="fas fa-phone text-sm lg:text-base text-secondary-color font-bold"></i>
+        </span>
+      </div>
+      <div class="relative">
+        <input
+          type="text"
+          name="contact2"
+          {% if client.contact2 %}
+            value="{{ client.contact2 }}"
+          {% else %}
+            placeholder="Entrer votre deuxieme numero"
+          {% endif %}
+          class="{% if form.contact2.errors %}border-secondary-color{% endif %} text-paragraph-color pl-5 pr-50px outline-none border-2 border-border-color-9 focus:border focus:border-secondary-color h-65px block w-full rounded-none placeholder:text-paragraph-color placeholder:text-sm placeholder:text-opacity-60"
+        >
+        <span class="absolute top-1/2 -translate-y-1/2 right-4">
+          <i class="fas fa-phone text-sm lg:text-base text-secondary-color font-bold"></i>
+        </span>
+      </div>
+    </div>
+    <div class="relative pt-5">
+      <input
+        type="text"
+        name="cni"
+        {% if client.CNI %}
+          value="{{ client.CNI }}"
+        {% else %}
+          placeholder="Entrer votre numero de CNI/PASSPORT/PERMIS"
+        {% endif %}
+        class="{% if form.cni.errors %}border-secondary-color{% endif %} text-paragraph-color pl-5 pr-50px outline-none border-2 border-border-color-9 focus:border focus:border-secondary-color h-65px block w-full rounded-none placeholder:text-paragraph-color placeholder:text-sm placeholder:text-opacity-60"
+      >
+    </div>
+        <div class="relative pt-5">
+      <input
+        type="text"
+        name="localisation"
+        {% if client.localisation %}
+          value="{{ client.localisation }}"
+        {% else %}
+          placeholder="Localisation"
+        {% endif %}
+        class="{% if form.localisation.errors %}border-secondary-color{% endif %} text-paragraph-color pl-5 pr-50px outline-none border-2 border-border-color-9 focus:border focus:border-secondary-color h-65px block w-full rounded-none placeholder:text-paragraph-color placeholder:text-sm placeholder:text-opacity-60"
+      >
+    </div>
+
+    <!-- submit button -->
+
+    <div class="my-10">
+      <!-- Bouton Activer Edition -->
+      <h5 id="editTrigger"
+        class="uppercase text-sm md:text-base text-white relative group whitespace-nowrap font-normal mb-0 transition-all duration-300 border border-secondary-color hover:border-heading-color inline-block z-0 cursor-pointer">
+        <span class="inline-block absolute top-0 right-0 w-full h-full bg-secondary-color group-hover:bg-black -z-1 group-hover:w-0 transition-all duration-300"></span>
+        <div class="relative z-1 px-30px lg:px-10 py-3 md:py-15px lg:py-17px group-hover:text-heading-color leading-1.5 uppercase">
+          Modifier mes informations
+        </div>
+      </h5>
+
+      <!-- Bouton Enregistrer -->
+      <h5 id="saveContainer" class="ml-5 hidden uppercase text-sm md:text-base text-white relative group whitespace-nowrap font-normal mb-0 transition-all duration-300 border border-primary-color hover:border-heading-color inline-block z-0">
+        <span class="inline-block absolute top-0 right-0 w-full h-full bg-primary-color group-hover:bg-black -z-1 group-hover:w-0 transition-all duration-300"></span>
+        <button id="formSend" type="submit" class="relative z-1 px-30px lg:px-10 py-3 md:py-15px lg:py-17px group-hover:text-heading-color leading-1.5 uppercase">
+          Enregistrer
+        </button>
+      </h5>
+    </div>
+  </form>

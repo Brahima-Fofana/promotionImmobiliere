@@ -1,0 +1,48 @@
+{% load static %}
+
+{% if slider.exists %}
+<!-- banner section -->
+<section>
+  <!-- Swiper  -->
+  <div class="swiper mySwiper">
+    <div class="swiper-wrapper">
+      {% for elt in slider %}
+      <div class="swiper-slide overflow-hidden">
+        <div class="relative" style="max-height:calc(100vh - 150px);">
+          <div>
+            <img src="{{ elt.image.url }}" alt="slide" class="w-full h-full object-cover" />
+          </div>
+          {% if elt.active_libelle %}
+          <div class="">
+            <div
+              data-aos="fade-up"
+              data-aos-duration="1000"
+              data-aos-delay="300"
+              data-aos-easing="ease-in-out"
+              data-aos-once="true"
+              class=" rounded-xl shadow-xl absolute top-1/2 left-1/10 p-10 -translate-y-1/2"
+            >
+              <p class="text-white bg-black/60 p-8">
+                <span class="text-2xl md:!text-5xl tracking-tight font-extrabold pb-5" >
+                  {{ elt.libelle|default:"Proprietaire, ce n'est pas un vain mot," }}
+                </span><br>
+                <span class="text-xl md:!text-3xl"  >
+                  {{ elt.description|default:"Mais une realite chez Mondial Building" }}
+                </span>
+              </p>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    {% if slider|length > 1 %}
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-pagination"></div>
+    {% endif %}
+  </div>
+</section>
+{% endif %}

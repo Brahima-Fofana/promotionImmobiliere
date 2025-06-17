@@ -1,0 +1,221 @@
+{% load static %}
+{% load tailwind_tags %}
+    <!-- footer start -->
+  <style>
+    .translate-side{
+      transform: translateY(-50%);
+    }
+  </style>
+    {% if footer.exists %}
+    <footer>
+      <div class="{% if not footer_side %}pt-[10px]{% endif %} pb-5 px-[15px] 3xl:px-[2%] 4xl:px-[5%] mt-[95px] bg-section-bg-2 text-sm lg:text-base text-white relative">
+        <div  class="px-15px">
+          {% if footer_side %}
+          <!-- footer top -->
+          <div class="container w-full translate-side">
+            <div class="px-25px lg:px-60px py-50px bg-secondary-color text-white flex justify-center lg:justify-between items-center flex-col lg:flex-row gap-y-30px lg:gap-0 sm:whitespace-nowrap">
+              <div>
+                <h5 class="text-xl md:text-26px lg:text-3xl xl:text-4xl text-white font-bold mb-15px">
+                  <span class="leading-1.3">{{ footer_side.libelle }}</span>
+                </h5>
+                <p class="text-white leading-1.8">
+                  {{ footer_side.description }}
+                </p>
+              </div>
+              <div>
+                <h5 class="capitalize inline-block text-sm md:text-base text-primary-color hover:text-white hover:bg-primary-color relative group whitespace-nowrap font-normal transition-all duration-300 shadow-box-shadow-3 mb-0">
+                  <span
+                    class="inline-block absolute top-0 right-0 w-full h-full bg-white group-hover:bg-secondary-color z-1 group-hover:w-0 transition-all duration-300"
+                  ></span>
+                  <a href="{% url 'contact' %}"
+                    class="relative z-10 px-5 md:px-25px lg:px-10 py-10px md:py-3 lg:py-17px group-hover:text-white leading-23px">
+                    {{ footer_side.lien_title }} <i class="icon-next"></i>
+                  </a>
+                </h5>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+
+          <!-- footer main -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-12 gap-x-30px text-sm lg:text-base text-white">
+           {% for footer in footer %}
+
+            {% if footer.section_title == 'presentation' %}
+            <!-- footer about-->
+            <div class="xl:col-span-3 mb-60px lg:pr-35px">
+              <div class="mb-15px">
+                <a href="text-center">
+                    <img src="{% if compagny and compagny.image %} {{compagny.image.url}} {% endif %}" alt="" class="w-full" >
+                </a>
+                <p class="leading-1.8 mb-5 lg:mb-25px text-white">
+                   {{ compagny.description }}
+                </p>
+                <ul class="space-y-2">
+                  {% if compagny.localisation %}
+                  <li>
+                    <p class="leading-1.8 text-white flex">
+                      <i class="icon-placeholder mr-15px mt-1"></i>
+                      <span>{{ compagny.localisation }}</span>
+                    </p>
+                  </li>
+                  {% endif  %}
+
+                  {% if compagny.contact_set.all.exists %}
+                    {% for elt in compagny.contact_set.all %}
+                    <li>
+                      <span class="leading-1.8 flex">
+                        <i class="{{ elt.icon }} mr-15px mt-1"></i>
+                        <span>{{ elt.libelle }}</span>
+                      </span>
+                    </li>
+                    {% endfor %}
+                  {% endif  %}
+
+                  {% if compagny.email %}
+                  <li>
+                    <span
+                      class="leading-1.8 flex"
+                    >
+                      <i class="icon-mail mr-15px mt-1"></i>
+                      <span>{{ compagny.email }}</span>
+                    </span>
+                  </li>
+                  {% endif  %}
+                </ul>
+                {% if compagny.reseauxsociaux_set.all.exists %}
+                <ul class="flex items-center gap-x-5 mt-5">
+                  {% for elt in compagny.reseauxsociaux_set.all %}
+                  <li>
+                  <a href="{% if 'http' in elt.url %}{{ elt.url }}{% else %}https://{{ elt.url }}{% endif %}" target="_blank">
+                      <i class="{{elt.icon}}"></i>
+                    </a>
+                  </li>
+                  {% endfor %}
+                </ul>
+                {% endif %}
+              </div>
+            </div>
+            {% endif %}
+
+            {% if footer.section_title == 'compagnie' %}
+            <!-- footer company-->
+            <div class="xl:col-span-2 mb-60px">
+              <h3 class="text-22px font-bold mb-25px text-white">
+                <span class="leading-1.3">{{ footer.libelle }}</span>
+              </h3>
+              <ul class="space-y-[15px]">
+                {% for elt in footer.section.all %}
+                <li>
+                  <a href="{# % url elt.router % #}"
+                    class="hover:text-secondary-color -translate-x-5 hover:translate-x-0 group leading-1.8"><span
+                      class="text-secondary-color pr-15px opacity-0 group-hover:opacity-100 transition-all duration-300">//</span>
+                    {{ elt.libelle }}
+                  </a>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+            {% endif %}
+
+            {% if footer.section_title == 'services' %}
+            <!-- footer services-->
+            <div class="xl:col-span-2 mb-60px">
+              <h3 class="text-22px font-bold mb-25px text-white">
+                <span class="leading-1.3"> {{footer.libelle}} </span>
+              </h3>
+              <ul class="space-y-[15px]">
+                {% for elt in footer.section.all %}
+                <li>
+                  <a href=""
+                    class="hover:text-secondary-color -translate-x-5 hover:translate-x-0 group leading-1.8"><span
+                      class="text-secondary-color pr-15px opacity-0 group-hover:opacity-100 transition-all duration-300">//</span>
+                    {{ elt.libelle }}
+                  </a>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+            {% endif %}
+
+            {% if footer.section_title == 'espace_client' %}
+            <!-- footer customer care-->
+            <div class=" xl:col-span-2 mb-60px">
+              <h3 class="text-22px font-bold mb-25px text-white">
+                <span class="leading-1.3"> {{ footer.libelle }} </span>
+              </h3>
+              <ul class="space-y-[15px]">
+                {% for elt in footer.section.all %}
+                <li>
+                  <span
+                    class="hover:text-secondary-color -translate-x-5 hover:translate-x-0 group leading-1.8"><span
+                      class="text-secondary-color pr-15px opacity-0 group-hover:opacity-100 transition-all duration-300">//</span>
+                     {{ elt.libelle }}
+                  </span>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+            {% endif %}
+
+            {% if footer.section_title == 'mail' %}
+            <!-- footer newsletter-->
+            <div class="xl:col-span-3 mb-60px">
+              <h3 class="text-22px font-bold mb-25px text-white">
+                <span class="leading-1.3">  {{ footer.libelle }} </span>
+              </h3>
+              <p class="leading-1.8 mb-5 lg:mb-25px text-white">
+                 {{ footer.section.0.description }}
+              </p>
+
+              <!-- subscription input  -->
+              <div>
+<!--                <form class="w-full relative">-->
+<!--                  <input-->
+<!--                    type="text"-->
+<!--                    placeholder="Email*"-->
+<!--                    class="w-full text-sm bg-white text-black pl-5 pr-50px placeholder:text-paragraph-color outline-none border-2 border-border-color-9 focus:border focus:border-secondary-color h-65px block rounded-none"-->
+<!--                  >-->
+<!--                  <button-->
+<!--                    type="submit"-->
+<!--                    class="absolute top-0 right-0 h-full px-18px text-white bg-secondary-color hover:bg-primary-color"-->
+<!--                  >-->
+<!--                    <i class="fas fa-location-arrow text-lg font-bold"></i>-->
+<!--                  </button>-->
+<!--                </form>-->
+              </div>
+              <!-- payment methods -->
+              <div>
+                <h3 class="text-base lg:text-lg font-bold mt-30px mb-15px text-white">
+                  <span class="leading-1.3"> {{ footer.section.0.libelle }} </span>
+                </h3>
+                <img src="{{ footer.section.0.image.url }}" alt="Payment Image">
+              </div>
+            </div>
+            {% endif %}
+
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <!-- footer copyright -->
+      {% if footer_bottom %}
+      <div class="py-25px px-15px 3xl:px-[2%] 4xl:px-[5%] bg-section-bg-7 text-sm lg:text-base text-white">
+        <div class="px-15px">
+          <div class="flex justify-center items-center">
+            <p class="leading-1.8 text-center lg:text-start text-white">
+              {{ footer_bottom.libelle }}
+            </p>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+
+    </footer>
+    {% endif %}
+
+    <!-- scroll top -->
+    <button class="scroll-up w-30px h-30px lg:w-10 lg:h-10 lg:text-xl bg-section-bg-1 text-heading-color hover:bg-secondary-color hover:text-white rotate-[45deg] shadow-box-shadow-3 fixed bottom-[50px] lg:bottom-[70px] right-[3%] flex justify-center items-center z-xl">
+      <i class="fa fa-angle-up leading-1 -rotate-[45deg] inline-block"></i>
+    </button>

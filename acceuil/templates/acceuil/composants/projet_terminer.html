@@ -1,0 +1,107 @@
+{% load static %}
+
+{% if projet_terminer.exists %}
+<!-- news section -->
+<section>
+  <div>
+    <div class="container py-20">
+      <!-- section heading -->
+      <div class="text-center mb-50px" data-aos="fade-down" data-aos-duration="1000" data-aos-once="true">
+        <p class="text-sm md:text-15px lg:text-base text-secondary-color bg-secondary-color bg-opacity-10 capitalize mb-15px py-0.5 px-5 rounded-full inline-block font-semibold"
+           data-aos="zoom-in" data-aos-delay="200" data-aos-duration="800" data-aos-once="true">
+          <span class="leading-1.3">Nos Réalisations</span>
+        </p>
+        <h2 class="text-2xl sm:text-3xl md:text-26px lg:text-3xl xl:text-44px text-heading-color font-bold"
+            data-aos="zoom-in" data-aos-delay="300" data-aos-duration="800" data-aos-once="true">
+          <span class="leading-1.3">Les Projets Terminés</span>
+        </h2>
+      </div>
+
+      <div class="news-slider-container swiper-container relative -mx-15px">
+        <div class="swiper news-slider static">
+          <div class="swiper-wrapper">
+            {% for elt in projet_terminer %}
+            <div data-aos="{% cycle 'fade-right' 'zoom-in' 'fade-up' 'fade-left' %}"
+                 data-aos-delay="{{ forloop.counter0|add:'1' }}00"
+                 data-aos-duration="800"
+                 data-aos-easing="ease-in-out"
+                 data-aos-anchor-placement="top-bottom"
+                 data-aos-once="true"
+                 class="swiper-slide mb-65px xl:mb-50px px-15px cursor-default">
+              <div class="group">
+                <!-- card thumbs -->
+                <div class="relative leading-1">
+                  <a href="{% url 'projet_detail' elt.projet.slug %}" class="overflow-hidden">
+                    <img
+                      src="{{ elt.projet.image.url }}"
+                      class="w-full group-hover:scale-110 transition-all duration-700"
+                      alt="">
+                  </a>
+                </div>
+                <!-- card body -->
+                <div class="p-30px shadow-box-shadow-4">
+                  <ul class="mb-15px flex gap-x-25px items-center">
+                    <li class="text-xs md:text-sm font-semibold">
+                      <a href="#" class="leading-1.8 hover:text-secondary-color flex gap-5px items-center">
+                        {% if elt.projet.localisation %}
+                        <i class="icon-placeholder text-secondary-color"></i>
+                        {{ elt.projet.localisation }}
+                        {% endif %}
+                      </a>
+                    </li>
+                  </ul>
+                  <h4 class="text-lg md:text-xl lg:text-22px font-semibold text-heading-color">
+                    <a href="{% url 'projet_detail' elt.projet.slug %}" class="hover:text-secondary-color leading-1.3">
+                      {{ elt.projet.libelle|truncatewords:100 }}
+                    </a>
+                  </h4>
+                  <div class="pt-5 mt-5 lg:pt-5 border-t border-border-color-1">
+                    <ul class="flex justify-between items-center">
+                      <li class="text-xs md:text-sm font-semibold">
+                        <p class="leading-1.8 flex gap-5px items-center">
+                          <i class="far fa-calendar-alt text-secondary-color"></i>
+                          {{ elt.date_de_fin }}
+                        </p>
+                      </li>
+                      <li class="text-xs md:text-sm font-semibold">
+                        <a href="{% url 'projet_detail' elt.projet.slug %}"
+                           class="leading-1.8 text-secondary-color uppercase">
+                          EN SAVOIR PLUS
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+
+          <!-- pagination -->
+          <div class="swiper-pagination swiper-pagination-clickable swiper-pagination-bullets swiper-pagination-horizontal !-bottom-[6px] block xl:hidden">
+          </div>
+
+          <!-- navigation -->
+          <div class="hidden xl:block">
+            <div class="swiper-button-next bg-white z-1"
+                 data-aos="fade-left" data-aos-delay="100" data-aos-duration="600" data-aos-once="true">
+              <i class="fas fa-arrow-right"></i>
+            </div>
+            <div class="swiper-button-prev bg-white z-1"
+                 data-aos="fade-right" data-aos-delay="100" data-aos-duration="600" data-aos-once="true">
+              <i class="fas fa-arrow-left"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex justify-center items-center mt-10" data-aos="zoom-in" data-aos-delay="50" data-aos-once="true">
+        <a href="{% url 'projets' %}"
+           class="border rounded-full text-xl font-bold animate-bounce px-10 py-2 hover:bg-secondary-color hover:text-white">
+          Tous les annonces
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}

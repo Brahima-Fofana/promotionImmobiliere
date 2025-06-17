@@ -1,0 +1,353 @@
+{% load static %}
+
+{% if projet %}
+        <div id="message_ajouter_panier" hx-swap-oob="true">
+            {% include 'client/message_toastify.html' %}
+        </div>
+      <!-- product details section -->
+      <section x-data = "{ activeTab : 1 }">
+        <div class="container modal-container property-tab pt-70px">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-x-30px">
+            <!-- details body -->
+            <div class="lg:col-start-1 lg:col-span-8">
+              <!--  top -->
+              <ul class="flex flex-wrap gap-x-15px md:gap-x-35px gap-y-15px items-center mb-30px">
+                <li>
+                  <ul class="flex gap-x-15px md:gap-x-30px items-center">
+                    <li>
+                      <a
+                        class="text-xs md:text-sm uppercase text-white px-15px pt-5px pb-0.5 bg-secondary-color hover:bg-primary-color hover:text-white font-semibold"
+                        href="product-details.html#"
+                        ><span class="leading-1.8 md:leading-1.8">
+                        {% if statut_projet %}
+                        {{projet_select.option}}
+                        {% else %}
+                        {{ projet.option }}
+                        {% endif %}
+                      </span>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <ul class="flex gap-x-15px md:gap-x-30px items-center">
+                    <li>
+                      <p class="text-xs md:text-sm font-semibold">
+                        <span class="leading-1.8 md:leading-1.8"><i
+                            class="far fa-calendar-alt text-secondary-color mr-5px">
+                        </i>
+                            {% if statut_projet %}
+                            {{ projet_select.date_de_fin }}
+                            {% else %}
+                            {{ projet.modifie_le }}
+                            {% endif %}
+                        </span>
+                      </p>
+                    </li>
+                    <li>
+                      <a
+                            hx-get="{% url 'ajouter_panier' projet.id %}"
+                            hx-swap="none"
+                             class="cursor-pointer text-xs md:text-sm font-semibold"><span class="leading-1.8 md:leading-1.8"><i
+                            class="icon-shopping-cart font-bold text-lg text-secondary-color mr-5px"></i>
+                      Ajouter au panier </span></a>
+                    </li>
+                    <li>
+                      <a class="text-xs md:text-sm font-semibold">
+                          <span class="leading-1.8 md:leading-1.8"><i class="far fa-comments text-secondary-color mr-5px"></i>
+                              {% if commentaire|length == 0 %}
+                                Aucun commentaire.
+                              {% elif commentaire|length == 1 %}
+                                1 commentaire.
+                              {% else %}
+                                {{ commentaire|length }} commentaires
+                              {% endif %}
+                          </span>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+
+              <!-- main -->
+              <div>
+                <h4 class="text-2xl md:text-26px lg:text-3xl xl:text-4xl font-bold text-heading-color mb-15px">
+                  <span class="leading-1.3 lg:leading-1.3 xl:leading-1.3">{{ projet.libelle }}</span>
+                </h4>
+                <p class="text-sm">
+                  {% if projet.localisation %}
+                  <span class="leading-1.8"
+                    ><i class="flaticon-pin text-secondary-color"></i>
+                      {{ projet.localisation }}
+                  </span>
+                  {% endif %}
+                </p>
+                <!-- Description -->
+                  {% if projet.contenue %}
+                <h4 class="text-22px font-semibold leading-1.3 pl-10px border-l-2 border-secondary-color text-heading-color my-30px">
+                  Description
+                </h4>
+                <p class="text-sm lg:text-base my-5">
+                  <span class="leading-1.8 lg:leading-1.8">
+                    {{ projet.contenue }}
+                  </span>
+                </p>
+                  {% endif %}
+                <!-- Property Detail -->
+                  {% if projet.caracteristiqueprojet_set.all.exists %}
+                <h4 class="text-22px font-semibold leading-1.3 pl-10px border-l-2 border-secondary-color text-heading-color my-30px">
+                  Caracteristique du projet
+                </h4>
+                <div class="flex flex-col md:flex-row bg-section-bg-1 mb-60px">
+                  <!-- Boucle pour les éléments à index pair -->
+                  {% for elt in projet.caracteristiqueprojet_set.all %}
+                    {% if forloop.counter0|divisibleby:2 %}
+                      <ul class="px-30px md:px-50px py-5 md:pt-30px md:pb-10 md:border-r md:border-border-color-7">
+                        <li class="text-sm mt-4 font-semibold">
+                          <span class="leading-1.8 min-w-[110px] inline-block flex-shrink-0">
+                            {{ elt.libelle }} :
+                          </span>
+                          <p class="text-sm lg:text-base inline-block text-heading-color">
+                            <span class="leading-1.8 lg:leading-1.8">
+                              {{ elt.valeur }} {{ elt.unite|default:'' }}
+                            </span>
+                          </p>
+                        </li>
+                      </ul>
+                    {% endif %}
+                  {% endfor %}
+
+                  <!-- Boucle pour les éléments à index impair -->
+                  {% for elt in projet.caracteristiqueprojet_set.all %}
+                    {% if not forloop.counter0|divisibleby:2 %}
+                      <ul class="px-30px md:px-50px py-5 md:pt-30px md:pb-10">
+                        <li class="text-sm mt-4 font-semibold">
+                          <span class="leading-1.8 min-w-[110px] inline-block flex-shrink-0">
+                            {{ elt.libelle }} :
+                          </span>
+                          <p class="text-sm lg:text-base inline-block text-heading-color">
+                            <span class="leading-1.8 lg:leading-1.8">
+                              {{ elt.valeur }} {{ elt.unite|default:'' }}
+                            </span>
+                          </p>
+                        </li>
+                      </ul>
+                    {% endif %}
+                  {% endfor %}
+
+                </div>
+                  {% endif %}
+
+                <!-- Gallery -->
+              {% if projet.galerievette_set.all.exists %}
+                <h4 class="text-22px font-semibold leading-1.3 pl-10px border-l-2 border-secondary-color text-heading-color my-30px">
+                  Depuis notre Gallerie
+                </h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-30px mb-60px">
+                  {% for elt in projet.galerievette_set.all %}
+                  <div class="md:cols-start-1 md:col-span-1 leading-1">
+                    <a
+                      href="{{ elt.image.url }}"
+                      class="glightbox w-full leading-1 md:h-full">
+                      <img
+                        src="{{ elt.image.url }}"
+                        alt=""
+                        class="w-full md:h-full">
+                    </a>
+                  </div>
+                  {% endfor %}
+                </div>
+                {% endif %}
+
+                <!-- Floor Plans -->
+                {% if plan.exists %}
+                <h4 class="text-22px font-semibold leading-1.3 pl-10px border-l-2 border-secondary-color text-heading-color my-30px">
+                  Les Plans du projets
+                </h4>
+                <div class="tab plan-tab mb-60px">
+
+                  <div class="tab-links flex flex-wrap items-center gap-x-5 lg:gap-x-30px xl:gap-x-50px gap-y-10px text-sm lg:text-lg xl:text-xl text-heading-color mb-50px">
+                    {% for elt in plan %}
+                    <button
+                            @click = "activeTab = {{ forloop.counter }}"
+                            :class = "activeTab === {{ forloop.counter }} ? 'active' : ''"
+                            class="p-1px border-b-2 border-transparent font-semibold relative leading-1.2 after:w-10px after:h-10px after:border-3px after:border-white after:bg-transparent after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:translate-y-1/2 after:z-10 after:rounded-100%">
+                      {{ elt.libelle }}
+                    </button>
+                    {% endfor %}
+                  </div>
+
+                  <div class="tab-contents">
+                    <!-- content 1 -->
+                    {% for elt in plan %}
+                    <div
+                            x-show="activeTab === {{ forloop.counter }}"
+                            x-transition
+                            x-cloak
+                     >
+                      <div class="grid grid-cols-1 lg:grid-cols-12 gap-x-30px gap-y-50px">
+                        <div class="lg:col-start-1 lg:col-span-7">
+                          <img
+                            src="{{ elt.image.url }}"
+                            class="w-full"
+                            alt="#"
+                          >
+                        </div>
+                        <div class="lg:col-start-8 lg:col-span-5">
+                          <h6
+                            class="text-xl md:text-22px lg:text-26px xl:text-3xl font-bold text-heading-color mb-15px leading-1.3"
+                          >
+                            <span class="leading-1.3">{{ elt.libelle }}</span>
+                          </h6>
+                          <p class="text-sm lg:text-base">
+                            <span class="leading-1.8">
+                              {{ elt.description }}
+                            </span>
+                          </p>
+                        </div>
+                      </div>
+                      <div class="px-10 py-5 bg-section-bg-1 grid grid-cols-1 lg:grid-cols-2 gap-x-30px gap-y-10px mt-50px">
+                        {% if elt.caracteristiqueplan_set.all.exists %}
+                        <div>
+                          <ul class="flex flex-col gap-y-10px items-stretch">
+                            {% for el in elt.caracteristiqueplan_set.all %}
+                            {% if forloop.counter0|divisibleby:2 %}
+                            <li class="text-sm font-semibold relative z-0 before:w-full before:h-1 before:border-b before:border-dashed before:border-color-1 before:absolute before:top-1/2 before:-translate-y-1/2 before:left-0 before:-z-1">
+                              <ul class="flex justify-between items-center">
+                                <li class="leading-1.8 pr-10px bg-section-bg-1">
+                                  {{ el.libelle }}
+                                </li>
+                                <li class="text-sm lg:text-base leading-1.8 pl-10px bg-section-bg-1">
+                                  {{ el.valeur }} {{ el.unite }}
+                                </li>
+                              </ul>
+                            </li>
+                            {% endif %}
+                            {% endfor %}
+                          </ul>
+                        </div>
+                        <div>
+                          <ul class="flex flex-col gap-y-10px items-stretch">
+                            {% for el in elt.caracteristiqueplan_set.all %}
+                            {% if not forloop.counter0|divisibleby:2 %}
+                            <li class="text-sm font-semibold relative z-0 before:w-full before:h-1 before:border-b before:border-dashed before:border-color-1 before:absolute before:top-1/2 before:-translate-y-1/2 before:left-0 before:-z-1">
+                              <ul class="flex justify-between items-center">
+                                <li class="leading-1.8 pr-10px bg-section-bg-1">
+                                  {{ el.libelle }}
+                                </li>
+
+                                <li class="text-sm lg:text-base leading-1.8 pl-10px bg-section-bg-1">
+                                  {{ el.valeur }} {{ el.unite }}
+                                </li>
+                              </ul>
+                            </li>
+                            {% endif %}
+                            {% endfor %}
+                          </ul>
+                        </div>
+                        {% endif %}
+                      </div>
+                    </div>
+                    {% endfor %}
+                  </div>
+                </div>
+                {% endif %}
+
+                <!-- Customer Reviews -->
+                <h4 class="text-22px font-semibold leading-1.3 pl-10px border-l-2 border-secondary-color text-heading-color my-30px">
+                  ESPACE COMMENTAIRE
+                </h4>
+
+                <hr class="my-50px border-t border-border-color-11 opacity-40">
+                
+                <div id="espace_commentaire">
+                  {% include 'acceuil/pages/projet_detail/section_projet/commentaire.html' %}
+                </div>
+
+                <!-- add reviews -->
+                <form
+                        hx-post="{% url 'ajouter_commentaire' projet.id %}"
+                        hx-target="#espace_commentaire" hx-swap="innerHTML"
+                        hx-on::after-request="this.reset()"
+                        class="form-primary bg-white-5 shadow-box-shadow-2 px-25px pt-10 pb-50px md:p-50px md:pt-10 mt-5 mb-60px">
+                  {% csrf_token %}
+                  <h4 class="text-17px md:text-lg lg:text-xl font-bold text-heading-color mb-5">
+                    <span class="leading-1.3 md:leading-1.3 lg:leading-1.3">
+                      Ajouter un commentaire
+                    </span>
+                  </h4>
+                  <div class="grid gap-30px mb-35px">
+                    <!-- message -->
+                    <div class="relative mb-2">
+                      <textarea
+                        name="contenue"
+                        placeholder="Entrer votre message"
+                         class="min-h-[150px] text-paragraph-color bg-white pl-5 pr-50px py-15px outline-none border-2 focus:border-0 border-white-5 h-65px block w-full rounded-none transition-none"
+                      ></textarea>
+                      <span class="absolute top-[30px] -translate-y-1/2 right-4">
+                        <i
+                          class="fas fa-pencil text-sm lg:text-base text-secondary-color font-bold"
+                        ></i>
+                      </span>
+                    </div>
+                  </div>
+
+                  <!-- submit button -->
+                  <div>
+                    <h5 class="uppercase text-sm md:text-base text-white relative group whitespace-nowrap font-normal mb-0 transition-all duration-300 border border-secondary-color hover:border-heading-color inline-block z-0">
+                      <span class="inline-block absolute top-0 right-0 w-full h-full bg-secondary-color group-hover:bg-black -z-1 group-hover:w-0 transition-all duration-300"></span>
+                      <button
+                        type="submit"
+                        class="relative z-1 px-5 md:px-25px lg:px-10 py-10px md:py-15px lg:py-17px group-hover:text-heading-color leading-23px uppercase"
+                      >
+                        SOUMETTRE
+                      </button>
+                    </h5>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <!-- sidebar -->
+            <div class="lg:col-start-9 lg:col-span-4 pt-60px lg:pt-0">
+
+              <!-- Top Rated Product -->
+              {% if projet_all.exists %}
+              <div class="px-5 pt-35px pb-10 xl:pl-35px xl:pr-30px mb-10 border-2 border-border-color-11">
+                <h4 class="text-lg font-semibold text-heading-color mb-25px">
+                  <span
+                    class="leading-1.3 pl-10px border-l-2 border-secondary-color"
+                    >Nos Projets</span
+                  >
+                </h4>
+                <ul>
+                  {% for elt in projet_all %}
+                  <li class="pb-25px mb-25px border-b border-white-4">
+                    <div class="flex gap-x-15px xl:gap-x-5">
+                      <div class="w-70px xl:w-90px flex-shrink-0">
+                        <a href="{% url 'projet_detail' elt.slug %}"
+                          ><img src="{{ elt.image.url }}" alt=""
+                        ></a>
+                      </div>
+
+                      <div>
+                        <h6 class="text-sm font-medium mb-1">
+                          <a href="{% url 'projet_detail' elt.slug %}" class="leading-1.3"
+                            >{{ elt.libelle }}</a
+                          >
+                        </h6>
+                        <p class="text-sm font-bold text-secondary-color">
+                          <span class="leading-1.8">{{ elt.montant_investissement }} / {{ elt.modalite_investissement }}</span>
+                        </p>
+                      </div>
+                    </div>
+                  </li>
+                  {% endfor %}
+                </ul>
+              </div>
+              {% endif %}
+
+            </div>
+          </div>
+        </div>
+      </section>
+{% endif %}

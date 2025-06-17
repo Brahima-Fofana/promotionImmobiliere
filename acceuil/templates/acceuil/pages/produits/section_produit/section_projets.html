@@ -1,0 +1,106 @@
+{% load static %}
+
+      <!-- poperty section -->
+        <section>
+        <div class="container modal-container tab property-tab py-30">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-x-30px">
+            <!-- poperty body -->
+            <div class=" lg:col-span-12">
+              <!-- filter top -->
+              <div class="mb-50px flex flex-col md:flex-row flex-wrap items-start md:items-center gap-y-4">
+                <ul class="flex flex-wrap items-center gap-y-3 tab-links">
+                  <li class="text-3xl pr-25px active">
+                    <button
+                            hx-get="{% url 'projets' %}" hx-target="#projets-list"
+                            class="text-paragraph-color hover:text-secondary-color">
+                      <i class="fas fa-th-large"></i>
+                    </button>
+                  </li>
+                </ul>
+                <ul class="flex flex-col md:flex-row flex-wrap justify-center md:items-center gap-y-3">
+                  <form id="filters" class="grid grid-cols-2 lg:grid-cols-4 gap-4"
+                        hx-get="{% url 'projets' %}" hx-target="#projets-list"
+                        hx-swap="innerHTML" hx-trigger="change delay:300ms, load delay:100ms"
+                  >
+                    <li class="pr-30px">
+                        <select class="selectize" name="statut_projet">
+                          <option data-display="Select" value="">Statut du projet</option>
+                          {% for elt in statut_projet %}
+
+                          <option data-display="Select" value="{{ elt }}"
+                          {% if statut_projet_acceuil == elt %}selected{% endif %} >{{ elt }}
+                          </option>
+
+                          {% endfor %}
+                         </select>
+                    </li>
+                    <li class="pr-30px">
+                        <select class="selectize" name="type_projet">
+                          <option data-display="Select" value="">Type du projet</option>
+                          {% for elt in types %}
+
+                          <option data-display="Select" value="{{ elt }}"
+                          {% if types_acceuil == elt %}selected{% endif %} >{{ elt }}
+                          </option>
+
+                          {% endfor %}
+                         </select>
+                    </li>
+                    <li class="pr-30px">
+                        <select class="selectize" name="localisation_projet">
+                          <option data-display="Select" value="">Localisation</option>
+                          {% for elt in localisation_projet %}
+
+                          <option data-display="Select" value="{{ elt }}"
+                          {% if localisation_projet_acceuil == elt %}selected{% endif %}>{{ elt }}
+                          </option>
+
+                          {% endfor %}
+                         </select>
+                    </li>
+                    <li class="pr-30px">
+                        <select class="selectize" name="page">
+                          <option data-display= "Select" value="all">Tous les pages</option>
+                          {% for elt in page.paginator.page_range %}
+                            <option data-display="Select" value="{{ elt }}">Page {{ elt }}</option>
+                          {% endfor %}
+                         </select>
+                    </li>
+                  </form>
+                </ul>
+              </div>
+
+              <div class="tab-contents">
+                <!-- content 1 -->
+                <div>
+                  <!-- search area  -->
+                  <div class="mb-30px">
+                    <form class="flex items-center">
+                      <input
+                       id="search"
+                       type="search"
+                       name="search"
+                        placeholder="Entrer le titre de l'annonce"
+                        {% if search_header %}value="{{ search_header }}"{% endif %}
+                        class="flex-grow text-paragraph-color text-sm font-semibold bg-section-bg-1 px-5 outline-none border-2 border-r-0 border-border-color-9 focus:border focus:border-secondary-color h-60px placeholder:text-heading-color block rounded-none"
+                      >
+                      <button
+                          id="search-btn"
+                          hx-get="{% url 'projets' %}" hx-target="#projets-list" hx-include="#search"
+                          hx-trigger="click, load delay:100ms"
+                           class="flex-shrink-0 text-sm lg:text-base h-60px w-14 flex items-center justify-center text-white bg-secondary-color hover:bg-primary-color">
+                        <i class="fas fa-search"></i>
+                      </button>
+                    </form>
+                  </div>
+
+                  <!-- property cards -->
+                  <div id="projets-list" hx-get="{% url 'projets' %}" hx-trigger="load" hx-target="#projets-list" hx-swap="innerHTML">
+                    {% include 'acceuil/pages/produits/section_produit/sous_section_produit/projet_card.html' %}
+                  </div>
+                </div>
+            </div>
+          </div>
+        </div>
+        </div>
+      </section>

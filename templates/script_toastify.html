@@ -1,0 +1,16 @@
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        {% if messages %}
+          {% for message in messages %}
+            Toastify({
+              text: "{{ message|escapejs }}",
+              duration: 3000,
+              gravity: "top", // "bottom" or "top"
+              position: "right", // "left", "center" or "right"
+              backgroundColor: "{% if 'success' in message.tags %}#22c55e{% elif 'error' in message.tags %}#ef4444{% elif 'warning' in message.tags %}#eab308{% else %}#3b82f6{% endif %}",
+              stopOnFocus: true,
+            }).showToast();
+          {% endfor %}
+        {% endif %}
+      });
+    </script>

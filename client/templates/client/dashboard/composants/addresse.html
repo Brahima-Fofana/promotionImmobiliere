@@ -1,0 +1,39 @@
+{% load static %}
+
+  <!-- content 3 -->
+  <div class="  ">
+    <p class="p-5 bg-section-bg-1 mb-5 lg:mb-6 text-sm lg:text-base flex justify-center">
+      <span class="leading-1.8 lg:leading-1.8">Vos coordonnées</span>
+    </p>
+    <div class="grid grid-cols-1 md:grid-cols-2">
+      <div>
+        <h2 class="text-17px md:text-lg lg:text-xl text-heading-color font-bold mb-15px">
+          <span class="leading-1.3 md:leading-1.3 lg:leading-1.3">
+            {% if user.first_name and user.last_name %}
+            {{ user.first_name }} {{ user.last_name }}
+            {% else %}
+            Votre Nom et Prenom
+            {% endif %}
+          </span>
+        </h2>
+        <p class="mb-5 lg:mb-6 text-sm lg:text-base font-bold">
+          <div class="leading-1.8 lg:leading-1.8">
+            {{ client.contact1|default:"Votre contacte" }}
+          </div>
+          {% if client.contact2 %}
+          <div class="leading-1.8 lg:leading-1.8">
+            {{ client.contact2 }}
+          </div>
+          {% endif %}
+        </p>
+        <p class="mb-5 lg:mb-6 text-sm lg:text-base">
+          <span class="leading-1.8 lg:leading-1.8">
+            {{ client.localisation|default:"Votre Localisation" }}
+          </span>
+        </p>
+        <p class="mb-5 lg:mb-6 text-sm lg:text-base">
+          <span class="leading-1.8 lg:leading-1.8">{{ user.email|default:"Votre email" }}</span>
+        </p>
+      </div>
+    </div>
+  </div>

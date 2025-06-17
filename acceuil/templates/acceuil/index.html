@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en" >
+  <head>
+    <meta charset="UTF-8" >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" >
+    {% include 'lien-css.html' %}
+    <link rel="stylesheet" href="{% static 'acceuil/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'acceuil/js/aos-master/dist/aos.css' %}">
+
+
+  </head>
+  <body>
+  <!--        prechargement -->
+    <div id="preloader">
+        <div class="">
+            <img src="{{ compagny.image.url }}" alt="Logo" id="loader-logo">
+        </div>
+    </div>
+
+
+    <main id="main-content">
+      {% include 'header.html' %}
+
+        {% include 'acceuil/composants/slider.html' %}
+        {% include 'acceuil/composants/recherche.html' %}
+        {% include 'acceuil/composants/appropos.html' %}
+        {% include 'acceuil/composants/compteur.html' %}
+        {% include 'acceuil/composants/propriete_vedette.html' %}
+        {% include 'acceuil/composants/service.html' %}
+        {% include 'acceuil/composants/annonce_vedette.html' %}
+        {% include 'acceuil/composants/plans.html' %}
+        {% include 'acceuil/composants/client_feedback.html' %}
+        {% include 'acceuil/composants/projet_terminer.html' %}
+
+      {% include 'footer.html' %}
+    </main>
+
+
+    {% include 'lien-js.html' %}
+    <script src="{% static 'swiper/package/swiper-bundle.js' %}"></script>
+    <script src="{% static 'acceuil/js/aos-master/dist/aos.js' %}"></script>
+    <script src="{% static 'acceuil/js/preload.js' %}"></script>
+
+    <script>
+      var swiper = new Swiper(".mySwiper", {
+        cssMode: true,
+        navigation: {
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev",
+        },
+        pagination: {
+          el: ".swiper-pagination",
+        },
+        mousewheel: true,
+        keyboard: true,
+      });
+    </script>
+    <script>
+        AOS.init({
+          once: true,
+        });
+    </script>
+  </body>
+</html>

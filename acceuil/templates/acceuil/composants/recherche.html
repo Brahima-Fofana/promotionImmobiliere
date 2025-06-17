@@ -1,0 +1,43 @@
+{% load static %}
+
+{% if type_projet and localisation_projet and statut_projet %}
+    <div data-aos="fade-up" data-aos-delay="200" class="container py-10 relative z-20" >
+      <form
+             action="{% url 'projets' %}" method="GET"
+             class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-30px lg:gap-4 xl:gap-30px py-10 px-25px md:p-10 shadow-box-shadow-1 border border-border-color-1 bg-white">
+        <div>
+          <select name="statut_projet" class="selectize" required>
+            <option value="" data-display="Select">Statut du projet</option>
+            {% for elt in statut_projet %}
+            <option value="{{ elt }}">{{ elt }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div>
+          <select name="type_projet" class="selectize">
+            <option data-display="Select">Type du projet</option>
+            {% for elt in type_projet %}
+            <option value="{{ elt }}">{{ elt }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div>
+          <select name="localisation_projet" class="selectize">
+            <option data-display="Select">Localisation</option>
+            {% for elt in localisation_projet %}
+            <option value="{{ elt }}">{{ elt }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <button type="submit" class="text-center">
+          <h5 class="uppercase text-sm md:text-base text-white relative group whitespace-nowrap font-normal mb-0 transition-all duration-300 border border-secondary-color hover:border-heading-color inline-block">
+            <span class="inline-block absolute top-0 right-0 w-full h-full bg-secondary-color group-hover:bg-black hover:bg-primary-cogroup-lor z-1 group-hover:w-0 transition-all duration-300"></span>
+            <span class="relative z-10 px-5 md:px-25px lg:px-10 py-10px md:py-3 lg:py-17px group-hover:text-heading-color leading-23px">
+              RECHERCHER
+            </span>
+          </h5>
+        </button>
+      </form>
+    </div>
+{% endif %}

@@ -1,0 +1,99 @@
+{% load static %}
+
+{% if request.user.is_authenticated %}
+  <div class="h-full" id="projet_panier">
+    <!-- cart wrapper -->
+    <div class="h-full overflow-y-auto pr-5">
+      <!-- cart top -->
+      <div class="flex justify-between items-center border-b border-border-primary pt-3px pb-3 mb-25px">
+        <div>
+          <span class="text-sm md:text-base font-bold uppercase">{{ request.user.username }}</span>
+        </div>
+        <div>
+          <button class="close-drawer text-black text-3xl px-15px py-2">
+            ×
+          </button>
+        </div>
+      </div>
+        <div class="grid grid-cols-12 border-b my-5 border-border-primary ">
+            <div class="col-span-6">
+                <p class="">{{ request.user.first_name|default:"Nom"  }}</p>
+                <p class="">{{ request.user.last_name|default:"Prenom"  }}</p>
+                <p class="text-secondary-color">{{ request.user.client.poste|default:"Poste"  }}</p>
+            </div>
+            <div class="col-span-6">
+                <div class="">
+                    <img src="{{ request.user.client.image.url }}" alt="" class="w-full " />
+                </div>
+            </div>
+        </div>
+        <div id="message_suppression">
+            {% include 'client/message_toastify.html' %}
+        </div>
+
+
+              <!-- cart items -->
+      <div class="max-h-[calc(100%-(360px))] cart-items overflow-y-auto" id="panier_card" hx-swap-oob="true">
+        <ul>
+        {% if request.user.client.panier_set.all %}
+            {% for elt in request.user.client.panier_set.all %}
+          <li class="accordion pl-10px pt-5 mb-5 flex gap-15px">
+            <div class="relative">
+              <a href="product-details.html" >
+                <img src="{{ elt.projet.image.url }}" alt="" class="w-20 inline-block">
+              </a>
+              <button
+                      hx-get="{% url 'supprimer_projet_panier' %}?projet_id={{elt.projet.id}}"
+                       class="ml-2 w-5 h-5 shadow-box-shadow-3 text-center text-10px bg-white hover:bg-secondary-color hover:text-white rounded-full absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 transition-all duration-300 cursor-pointer">
+              <i class="icon-cancel leading-5"></i>
+            </button>
+            </div>
+            <div>
+              <h6 class="text-sm md:text-15px lg:text-base mb-5px">
+                <a href="product-details.html"
+                  class="leading-23px text-heading-color hover:text-secondary-color font-medium">
+                    {{ elt.projet.libelle }}
+                </a>
+              </h6>
+              <div class="text-sm lg:text-base">
+                <span class="leading-22px">{{ elt.projet.montant_investissement }} / {{ elt.projet.modalite_investissement }}</span>
+              </div>
+            </div>
+          </li>
+            {% endfor %}
+        {% endif %}
+        </ul>
+      </div>
+
+      <!-- action area -->
+      <div class="pt-25px pb-15px flex justify-center py-10">
+        <h5 class="uppercase text-sm text-white relative group whitespace-nowrap font-normal transition-all duration-300 border border-secondary-color hover:border-heading-color">
+          <span class="inline-block absolute top-0 right-0 w-full h-full bg-secondary-color group-hover:bg-black hover:bg-primary-cogroup-lor z-1 group-hover:w-0 transition-all duration-300"></span>
+          <a href="{% url 'dashboard' %}?contenue=panier"
+            class="relative z-10 px-5 md:px-25px lg:px-10 py-10px md:py-3 lg:py-17px group-hover:text-heading-color leading-23px"
+            >Voir mon Panier</a>
+        </h5>
+      </div>
+
+      <div class="text-sm">
+        <p class="leading-15px mb-0 text-center">
+          Souscrivez-vite avant la fermeture de la phase de souscription
+        </p>
+      </div>
+    </div>
+  </div>
+{% else %}
+      <div class="text-sm min-h-screen flex justify-center items-center">
+          <div class="grid grid-cols-1 justify-content-center">
+              <div class="flex justify-center items-center py-5">
+                  <img src="{{ compagny.image.url }}" alt="" class="w-1/2"  />
+              </div>
+              <div class="">
+                <p class="leading-15px mb-0 text-center">
+                  Créer votre compte ou connectez-vous pour afficher le panier
+                </p>
+              </div>
+          </div>
+
+      </div>
+{% endif %}
