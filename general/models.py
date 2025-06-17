@@ -13,10 +13,10 @@ class Timestamp(models.Model):
         abstract = True
 
 class Compagnie(Timestamp):
-    denomination = models.CharField(max_length=255)
+    denomination = models.CharField(max_length=190)
     image = models.ImageField(upload_to='compagnie/')
-    description = models.CharField(max_length=255)
-    localisation = models.CharField(max_length=255)
+    description = models.CharField(max_length=190)
+    localisation = models.CharField(max_length=190)
     email = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
@@ -27,7 +27,7 @@ class Contact(Timestamp):
         ('icon-call', 'Telephone'),
     ]
     icon = models.CharField(max_length=100, choices=ICON)
-    libelle = models.CharField(max_length=255)
+    libelle = models.CharField(max_length=190)
     compagnie = models.ForeignKey(Compagnie, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -50,17 +50,17 @@ class ReseauxSociaux(Timestamp):
 class Appropos(Timestamp):
     image = models.ImageField(upload_to='appropos/', blank=True, null=True)
     presentation = models.TextField()
-    slogan = models.CharField(max_length=255)
-    option = models.CharField(max_length=255)
-    route = models.CharField(max_length=255, blank=True, null=True)
+    slogan = models.CharField(max_length=190)
+    option = models.CharField(max_length=190)
+    route = models.CharField(max_length=190, blank=True, null=True)
     compagnie = models.ForeignKey(Compagnie, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.compagnie.denomination
 
 class ApproposPage(Timestamp):
-    libelle = models.CharField(max_length=255)
-    intitule = models.CharField(max_length=255)
+    libelle = models.CharField(max_length=190)
+    intitule = models.CharField(max_length=190)
     service = models.ForeignKey(Appropos, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -74,25 +74,25 @@ class Prestation(Timestamp):
         ('flaticon-secure', 'Securite'),
     ]
     icon = models.CharField(max_length=100, choices=ICON)
-    libelle = models.CharField(max_length=255)
+    libelle = models.CharField(max_length=190)
     compagnie = models.ForeignKey(Appropos, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.libelle
 
 class ServiceSection(Timestamp):
-    libelle = models.CharField(max_length=255)
+    libelle = models.CharField(max_length=190)
     image = models.ImageField(upload_to='appropos/', blank=True, null=True)
     contenue = models.TextField()
-    option = models.CharField(max_length=255)
+    option = models.CharField(max_length=190)
     compagnie = models.ForeignKey(Compagnie, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.libelle
 
 class ServiceSectionPage(Timestamp):
-    libelle = models.CharField(max_length=255)
-    intitule = models.CharField(max_length=255)
+    libelle = models.CharField(max_length=190)
+    intitule = models.CharField(max_length=190)
     service = models.ForeignKey(ServiceSection, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -107,7 +107,7 @@ class Menu(Timestamp):
     ]
     titre = models.CharField(max_length=100)
     slug = models.SlugField()
-    route = models.CharField(max_length=255, choices=ROUTE)
+    route = models.CharField(max_length=190, choices=ROUTE)
     order = models.PositiveIntegerField(default=0)
 
     def __str__(self):
@@ -121,7 +121,7 @@ class Footer(Timestamp):
         ('espace_client', 'Espace Client'),
         ('mail', 'Ecrivez nous'),
     ]
-    libelle = models.CharField(max_length=255)
+    libelle = models.CharField(max_length=190)
     section_title = models.CharField(max_length=100, choices=SECTION_CHOICE)
     active = models.BooleanField(default=True)
     order = models.PositiveIntegerField(default=0)
@@ -131,17 +131,17 @@ class Footer(Timestamp):
 
 class FooterSection(Timestamp):
     section = models.ForeignKey(Footer, on_delete=models.CASCADE, related_name='section')
-    libelle = models.CharField(max_length=255, blank=True, null=True)
-    router = models.CharField(max_length=255, blank=True, null=True)
-    description_email = models.CharField(max_length=255, blank=True, null=True)
+    libelle = models.CharField(max_length=190, blank=True, null=True)
+    router = models.CharField(max_length=190, blank=True, null=True)
+    description_email = models.CharField(max_length=190, blank=True, null=True)
     mode_payement = models.ImageField(upload_to='footer/', blank=True, null=True)
 
     def __str__(self):
         return f"Footer section : {self.section.section_title}"
 
 class FooterSide(Timestamp):
-    libelle = models.CharField(max_length=255, blank=True, null=True)
-    description = models.CharField(max_length=255, blank=True, null=True)
+    libelle = models.CharField(max_length=190, blank=True, null=True)
+    description = models.CharField(max_length=190, blank=True, null=True)
     lien_title = models.CharField(max_length=100, blank=True, null=True)
     active = models.BooleanField(default=1)
 
@@ -149,15 +149,15 @@ class FooterSide(Timestamp):
         return self.libelle
 
 class FooterBottom(Timestamp):
-    libelle = models.CharField(max_length=255, blank=True, null=True)
+    libelle = models.CharField(max_length=190, blank=True, null=True)
     active = models.BooleanField(default=1)
 
     def __str__(self):
         return self.libelle
 
 class Slide(Timestamp):
-    libelle = models.CharField(max_length=255, blank=True, null=True)
-    description = models.CharField(max_length=255, blank=True, null=True)
+    libelle = models.CharField(max_length=190, blank=True, null=True)
+    description = models.CharField(max_length=190, blank=True, null=True)
     image = models.ImageField(upload_to='slider/', blank=True, null=True)
     ordre = models.PositiveIntegerField(default=0)
     active_libelle = models.BooleanField(default=1)
@@ -166,8 +166,8 @@ class Slide(Timestamp):
         return self.libelle
 
 class SliderVette(Timestamp):
-    libelle = models.CharField(max_length=255, blank=True, null=True)
-    description = models.CharField(max_length=255, blank=True, null=True)
+    libelle = models.CharField(max_length=190, blank=True, null=True)
+    description = models.CharField(max_length=190, blank=True, null=True)
     image = models.ImageField(upload_to='projet_slider')
     order = models.PositiveIntegerField(default=0)
     projet = models.ForeignKey(Projet, on_delete=models.CASCADE)
@@ -176,7 +176,7 @@ class SliderVette(Timestamp):
         return self.projet.libelle
 
 class GalerieVette(Timestamp):
-    libelle = models.CharField(max_length=255, blank=True, null=True)
+    libelle = models.CharField(max_length=190, blank=True, null=True)
     image = models.ImageField(upload_to='projet_slider')
     order = models.PositiveIntegerField(default=0)
     projet = models.ForeignKey(Projet, on_delete=models.CASCADE)
@@ -192,7 +192,7 @@ class Compteur(Timestamp):
         ('flaticon-armchair', 'Propriete'),
     ]
     type = models.CharField(max_length=100, choices=ICON)
-    libelle = models.CharField(max_length=255, blank=True, null=True)
+    libelle = models.CharField(max_length=190, blank=True, null=True)
     valeur = models.PositiveIntegerField()
     intitule_valeur = models.CharField(max_length=10, blank=True, null=True)
     ordre = models.PositiveIntegerField(default=0)
@@ -203,14 +203,14 @@ class Compteur(Timestamp):
 
 # APPARTEMENET VEDETTE DEBUT
 class AppartementsVedette(Timestamp):
-    libelle = models.CharField(max_length=255, blank=True, null=True)
-    description = models.CharField(max_length=255, blank=True, null=True)
+    libelle = models.CharField(max_length=190, blank=True, null=True)
+    description = models.CharField(max_length=190, blank=True, null=True)
 
     def __str__(self):
         return self.libelle
 
 class CaracteristiqueVedette(Timestamp):
-    libelle = models.CharField(max_length=255, blank=True, null=True)
+    libelle = models.CharField(max_length=190, blank=True, null=True)
     appartement = models.ForeignKey(AppartementsVedette, on_delete=models.CASCADE)
     ordre = models.PositiveIntegerField(default=0)
 
@@ -218,7 +218,7 @@ class CaracteristiqueVedette(Timestamp):
         return self.libelle
 
 class ImageAppVedette(Timestamp):
-    libelle = models.CharField(max_length=255, blank=True, null=True)
+    libelle = models.CharField(max_length=190, blank=True, null=True)
     image = models.ImageField(upload_to='image_app_vedette/', blank=True, null=True)
     appartement = models.ForeignKey(AppartementsVedette, on_delete=models.CASCADE)
     ordre = models.PositiveIntegerField(default=0)
@@ -227,7 +227,7 @@ class ImageAppVedette(Timestamp):
         return self.libelle
 
 class ImageFareVedette(Timestamp):
-    libelle = models.CharField(max_length=255, blank=True, null=True)
+    libelle = models.CharField(max_length=190, blank=True, null=True)
     image = models.ImageField(upload_to='image_app_vedette/', blank=True, null=True)
     appartement = models.ForeignKey(AppartementsVedette, on_delete=models.CASCADE)
     ordre = models.PositiveIntegerField(default=0)
@@ -241,8 +241,8 @@ class ImageFareVedette(Timestamp):
 class ServiceCard(Timestamp):
     image = models.ImageField(upload_to='services/', blank=True, null=True)
     libelle = models.CharField(max_length=200)
-    description = models.CharField(max_length=255)
-    option = models.CharField(max_length=255, blank=True, null=True)
+    description = models.CharField(max_length=190)
+    option = models.CharField(max_length=190, blank=True, null=True)
     slug = models.SlugField(unique=True)
     ordre = models.PositiveIntegerField(default=0)
     compagnie = models.ForeignKey(Compagnie, on_delete=models.CASCADE)
@@ -252,7 +252,7 @@ class ServiceCard(Timestamp):
 
 class ServiceDetail(Timestamp):
     image = models.ImageField(upload_to='services_detail/')
-    description = models.CharField(max_length=255, blank=True, null=True)
+    description = models.CharField(max_length=190, blank=True, null=True)
     contenue = models.TextField()
     service = models.ForeignKey(ServiceCard, on_delete=models.CASCADE)
 
@@ -263,7 +263,7 @@ class ServiceDetail(Timestamp):
 
 # PLAN VEDETTE
 class PlanVedette(Timestamp):
-    libelle = models.CharField(max_length=255)
+    libelle = models.CharField(max_length=190)
     projet = models.ForeignKey(Projet, on_delete=models.CASCADE)
     ordre = models.PositiveIntegerField(default=0)
 
@@ -295,10 +295,10 @@ class ProjetTerminer(Timestamp):
 
 # MEMBRE DE L'EQUIPE
 class MembreStaff(Timestamp):
-    nom = models.CharField(max_length=255)
-    prenom = models.CharField(max_length=255)
+    nom = models.CharField(max_length=190)
+    prenom = models.CharField(max_length=190)
     image = models.ImageField(upload_to='staff/', blank=True, null=True)
-    poste = models.CharField(max_length=255, blank=True, null=True)
+    poste = models.CharField(max_length=190, blank=True, null=True)
     ordre = models.PositiveIntegerField(default=0)
 
     def __str__(self):
@@ -318,8 +318,8 @@ class ReseauxSociauxStaff(Timestamp):
         return f"Nom : {self.staff.nom} - Prenom : {self.staff.prenom}"
 
 class PolitiqueConfidentialite(Timestamp):
-    libelle = models.CharField(max_length=255, blank=True, null=True)
-    description = models.CharField(max_length=255, blank=True, null=True)
+    libelle = models.CharField(max_length=190, blank=True, null=True)
+    description = models.CharField(max_length=190, blank=True, null=True)
     contenue = models.TextField()
 
     def __str__(self):

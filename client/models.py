@@ -15,9 +15,9 @@ class Client(Timestamp):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='profile_client/', default='profile_client/default.png', blank=True, null=True)
     date_naissance = models.DateField(blank=True, null=True)
-    CNI = models.CharField(max_length=255,blank=True, null=True, unique=True)
-    poste = models.CharField(max_length=255, blank=True, null=True)
-    localisation = models.CharField(max_length=255, blank=True, null=True)
+    CNI = models.CharField(max_length=190,blank=True, null=True, unique=True)
+    poste = models.CharField(max_length=190, blank=True, null=True)
+    localisation = models.CharField(max_length=190, blank=True, null=True)
     contact1 = models.CharField(max_length=20, blank=True, null=True)
     contact2 = models.CharField(max_length=20, blank=True, null=True)
 
@@ -38,7 +38,7 @@ class Commentaire(Timestamp):
         return f"projet : {self.projet.libelle} - commentaire : {self.contenue[:10]}"
 
 class DashboardClient(Timestamp):
-    libelle = models.CharField(max_length=255)
+    libelle = models.CharField(max_length=190)
     description = models.TextField()
     image = models.ImageField("Photo de profile client par default", upload_to='dashboard/', blank=True, null=True)
 
