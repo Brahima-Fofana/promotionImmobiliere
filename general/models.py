@@ -264,6 +264,7 @@ class ServiceDetail(Timestamp):
 # PLAN VEDETTE
 class PlanVedette(Timestamp):
     libelle = models.CharField(max_length=190)
+    image = models.ImageField(upload_to="plan_vedette_home/", blank=True, null=True)
     projet = models.ForeignKey(Projet, on_delete=models.CASCADE)
     ordre = models.PositiveIntegerField(default=0)
 
