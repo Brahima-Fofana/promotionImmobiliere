@@ -25,7 +25,7 @@ class Projet(Timestamp):
     contenue = models.TextField()
     type = models.CharField(max_length=100)
     montant_investissement = models.DecimalField(max_digits=12, decimal_places=2)
-    modalite_investissement = models.CharField(choices=MODALITE)
+    modalite_investissement = models.CharField(max_length=100, choices=MODALITE)
     cout_total = models.DecimalField(max_digits=12, decimal_places=2)
     image = models.ImageField(upload_to='projet')
     client_projet = models.ManyToManyField(Client, through="client.Souscription")

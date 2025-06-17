@@ -122,7 +122,7 @@ class Footer(Timestamp):
         ('mail', 'Ecrivez nous'),
     ]
     libelle = models.CharField(max_length=255)
-    section_title = models.CharField(choices=SECTION_CHOICE)
+    section_title = models.CharField(max_length=100, choices=SECTION_CHOICE)
     active = models.BooleanField(default=True)
     order = models.PositiveIntegerField(default=0)
 
@@ -191,7 +191,7 @@ class Compteur(Timestamp):
         ('flaticon-excavator', 'Construction'),
         ('flaticon-armchair', 'Propriete'),
     ]
-    type = models.CharField(choices=ICON)
+    type = models.CharField(max_length=100, choices=ICON)
     libelle = models.CharField(max_length=255, blank=True, null=True)
     valeur = models.PositiveIntegerField()
     intitule_valeur = models.CharField(max_length=10, blank=True, null=True)
@@ -310,7 +310,7 @@ class ReseauxSociauxStaff(Timestamp):
         ('fab fa-google', 'Gmail'),
         ('fab fa-whatsapp', 'Whatsapp'),
     ]
-    icon = models.CharField(choices=ICON)
+    icon = models.CharField(max_length=100, choices=ICON)
     url = models.TextField()
     staff = models.ForeignKey(MembreStaff, on_delete=models.CASCADE)
 
