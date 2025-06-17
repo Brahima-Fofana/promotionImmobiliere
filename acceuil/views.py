@@ -161,7 +161,7 @@ def projet(request):
 
 
     # Pagination
-    paginator = Paginator(projets, 2)
+    paginator = Paginator(projets, 9)
     page_number = request.GET.get('page', 1)
     page_obj = paginator.get_page(page_number)
 

@@ -1,4 +1,5 @@
 {% load static %}
+{% load humanize %}
 
 {% if request.user.is_authenticated %}
   <div class="h-full" id="projet_panier">
@@ -56,7 +57,7 @@
                 </a>
               </h6>
               <div class="text-sm lg:text-base">
-                <span class="leading-22px">{{ elt.projet.montant_investissement }} / {{ elt.projet.modalite_investissement }}</span>
+                <span class="leading-22px">{{ elt.projet.montant_investissement|intcomma }} / {{ elt.projet.modalite_investissement }}</span>
               </div>
             </div>
           </li>
