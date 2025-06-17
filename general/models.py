@@ -26,7 +26,7 @@ class Contact(Timestamp):
     ICON = [
         ('icon-call', 'Telephone'),
     ]
-    icon = models.CharField(choices=ICON)
+    icon = models.CharField(max_length=100, choices=ICON)
     libelle = models.CharField(max_length=255)
     compagnie = models.ForeignKey(Compagnie, on_delete=models.CASCADE)
 
@@ -39,7 +39,7 @@ class ReseauxSociaux(Timestamp):
         ('fab fa-google', 'Gmail'),
         ('fab fa-whatsapp', 'Whatsapp'),
     ]
-    icon = models.CharField(choices=ICON)
+    icon = models.CharField(max_length=100, choices=ICON)
     url = models.TextField()
     compagnie = models.ForeignKey(Compagnie, on_delete=models.CASCADE)
 
@@ -73,7 +73,7 @@ class Prestation(Timestamp):
         ('flaticon-heart', 'Propriete Saine'),
         ('flaticon-secure', 'Securite'),
     ]
-    icon = models.CharField(choices=ICON)
+    icon = models.CharField(max_length=100, choices=ICON)
     libelle = models.CharField(max_length=255)
     compagnie = models.ForeignKey(Appropos, on_delete=models.CASCADE)
 

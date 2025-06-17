@@ -95,6 +95,21 @@ WSGI_APPLICATION = 'promotionImmobiliere.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+
+# EN PRODUCTION
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'sc5zds_una',
+#         'USER': 'sc5zds_brahima',
+#
+#         'PASSWORD': 'Lassana2023',
+#         'HOST': 'localhost',
+#         'PORT': '3306',
+#     }
+# }
+
+# EN DEVELOPPEMENT
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',

@@ -16,10 +16,10 @@ class Timestamp(models.Model):
 
 class Projet(Timestamp):
     MODALITE = [
-        ('jour', 'JOUR'),
-        ('semaine', 'SEMAINE'),
-        ('mois', 'MOIS'),
-        ('annee', 'ANNEE'),
+        ('Jour', 'JOUR'),
+        ('Semaine', 'SEMAINE'),
+        ('Mois', 'MOIS'),
+        ('Année', 'ANNEE'),
     ]
     libelle = models.CharField(max_length=200)
     contenue = models.TextField()
