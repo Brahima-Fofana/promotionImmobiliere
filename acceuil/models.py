@@ -30,14 +30,14 @@ class Projet(Timestamp):
     image = models.ImageField(upload_to='projet')
     client_projet = models.ManyToManyField(Client, through="client.Souscription")
     slug = models.SlugField(unique=True)
-    localisation = models.CharField(max_length=255, blank=True, null=True)
+    localisation = models.CharField(max_length=190, blank=True, null=True)
     option = models.CharField(max_length=100)
 
     def __str__(self):
         return self.libelle
 
 class CaracteristiqueProjet(Timestamp):
-    libelle = models.CharField(max_length=255)
+    libelle = models.CharField(max_length=190)
     valeur = models.DecimalField(max_digits=12, decimal_places=2)
     unite = models.CharField(max_length=20, blank=True, null=True)
     projet = models.ForeignKey(Projet, on_delete=models.CASCADE)
@@ -46,8 +46,8 @@ class CaracteristiqueProjet(Timestamp):
         return f"Projet : {self.projet.libelle} - Caracteristique : {self.libelle}"
 
 class Plan(Timestamp):
-    libelle = models.CharField(max_length=255)
-    description = models.CharField(max_length=255)
+    libelle = models.CharField(max_length=190)
+    description = models.CharField(max_length=190)
     image = models.ImageField(upload_to='plan_projet/')
     projet = models.ForeignKey(Projet, on_delete=models.CASCADE)
     ordre = models.PositiveIntegerField(default=0)
@@ -56,7 +56,7 @@ class Plan(Timestamp):
         return f"{self.projet.libelle} - {self.libelle}"
 
 class CaracteristiquePlan(Timestamp):
-    libelle = models.CharField(max_length=255)
+    libelle = models.CharField(max_length=190)
     valeur = models.DecimalField(max_digits=12, decimal_places=2)
     unite = models.CharField(max_length=20, blank=True, null=True)
     plan = models.ForeignKey(Plan, on_delete=models.CASCADE)
@@ -65,8 +65,8 @@ class CaracteristiquePlan(Timestamp):
         return f"Plan : {self.plan.libelle} - Caracteristique : {self.libelle}"
 
 class Phase(Timestamp):
-    libelle = models.CharField(max_length=255)
-    description = models.CharField(max_length=255)
+    libelle = models.CharField(max_length=190)
+    description = models.CharField(max_length=190)
     status = models.BooleanField(default=False)
     projet = models.ForeignKey(Projet, on_delete=models.CASCADE)
 
@@ -74,7 +74,7 @@ class Phase(Timestamp):
         return f"{self.projet.libelle} - {self.libelle}"
 
 class Album(Timestamp):
-    titre = models.CharField(max_length=255, blank=True, null=True)
+    titre = models.CharField(max_length=190, blank=True, null=True)
     image = models.ImageField(upload_to='album')
     phase = models.ForeignKey(Phase, on_delete=models.CASCADE)
 
